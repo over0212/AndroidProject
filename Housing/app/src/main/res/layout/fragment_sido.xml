@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".SidoFragment">
+
+    <Button
+        android:id="@+id/nationWide"
+        style="@style/btnStyle"
+        android:text="@string/nationWide"
+        app:layout_constraintBottom_toTopOf="@id/nineSi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <LinearLayout
+        android:id="@+id/nineSi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        app:layout_constraintBottom_toTopOf="@id/eightDo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/nationWide"
+        app:layout_constraintTop_toBottomOf="@id/nationWide">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/seoul"
+                style="@style/btnStyle"
+                android:layout_marginEnd="10dp"
+                android:text="@string/seoul" />
+
+            <Button
+                style="@style/btnStyle"
+                android:id="@+id/incheon"
+                android:text="@string/incheon"
+                android:layout_marginEnd="10dp" />
+
+            <Button
+                style="@style/btnStyle"
+                android:id="@+id/gwangju"
+                android:text="@string/gwangju" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="#6667AB"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:textColor="@color/white">
+
+            <Button
+                style="@style/btnStyle"
+                android:id="@+id/sejong"
+                android:layout_marginEnd="10dp"
+                android:text="@string/sejong" />
+
+            <Button
+                style="@style/btnStyle"
+                android:id="@+id/daejeon"
+                android:layout_marginEnd="10dp"
+                android:text="@string/daejeon" />
+
+            <Button
+                style="@style/btnStyle"
+                android:id="@+id/daegu"
+                android:text="@string/daegu" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/ulsan"
+                style="@style/btnStyle"
+                android:layout_marginEnd="10dp"
+                android:text="@string/ulsan" />
+
+            <Button
+                android:id="@+id/busan"
+                style="@style/btnStyle"
+                android:layout_marginEnd="10dp"
+                android:text="@string/busan" />
+
+            <Button
+                style="@style/btnStyle"
+                android:id="@+id/jeju"
+                android:text="@string/jeju"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/eightDo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/nationWide"
+        app:layout_constraintTop_toBottomOf="@id/nineSi">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/gyeonggi"
+                style="@style/btnStyle"
+                android:layout_marginBottom="10dp"
+                android:text="@string/gyeonggi"/>
+
+            <Button
+                android:id="@+id/chungbuk"
+                style="@style/btnStyle"
+                android:layout_marginBottom="10dp"
+                android:text="@string/chungbuk" />
+
+            <Button
+                android:id="@+id/jeonbuk"
+                android:layout_marginBottom="10dp"
+                style="@style/btnStyle"
+                android:text="@string/jeonbuk" />
+
+            <Button
+                style="@style/btnStyle"
+                android:id="@+id/gyeongbuk"
+                android:text="@string/gyeongbuk" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/gangwon"
+                android:layout_marginBottom="10dp"
+                style="@style/btnStyle"
+                android:text="@string/gangwon" />
+
+            <Button
+                android:id="@+id/chungnam"
+                style="@style/btnStyle"
+                android:layout_marginBottom="10dp"
+                android:text="@string/chungnam"/>
+
+            <Button
+                android:id="@+id/jeonnam"
+                style="@style/btnStyle"
+                android:layout_marginBottom="10dp"
+                android:text="@string/jeonnam"/>
+
+            <Button
+                android:id="@+id/gyeongnam"
+                style="@style/btnStyle"
+                android:text="@string/gyeongnam" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
