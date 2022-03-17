@@ -46,7 +46,6 @@
             android:textStyle="bold" />
 
         <Button
-            android:text="2022-03-05"
             android:id="@+id/startDate"
             android:textSize="16sp"
             android:layout_width="0dp"
@@ -58,7 +57,6 @@
             tools:text="2022-03-05" />
 
         <Button
-            android:text="2022-03-05"
             android:textSize="16sp"
             android:id="@+id/endDate"
             android:backgroundTint="@color/white"
