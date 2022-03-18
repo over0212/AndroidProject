@@ -115,6 +115,23 @@ public class Item {
     public void setSido(String sido) {
         this.sido = sido;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "buildCompanyName='" + buildCompanyName + '\'' +
+                ", houseDetailSectionedName='" + houseDetailSectionedName + '\'' +
+                ", houseManageNumber='" + houseManageNumber + '\'' +
+                ", houseName='" + houseName + '\'' +
+                ", noticeNumber='" + noticeNumber + '\'' +
+                ", winnerPresentDate='" + winnerPresentDate + '\'' +
+                ", receiptStartDate='" + receiptStartDate + '\'' +
+                ", receiptEndDate='" + receiptEndDate + '\'' +
+                ", recruitmentNoticeDate='" + recruitmentNoticeDate + '\'' +
+                ", rentOrSaleName='" + rentOrSaleName + '\'' +
+                ", sido='" + sido + '\'' +
+                '}';
+    }
 }
 
 

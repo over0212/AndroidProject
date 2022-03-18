@@ -5,7 +5,7 @@ import com.tickaroo.tikxml.annotation.Xml;
 
 import java.util.List;
 
-@Xml(name = "item")
+@Xml(name = "items")
 public class Items {
     @Element(name = "item")
     private List<Item> item;

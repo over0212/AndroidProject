@@ -20,7 +20,10 @@ public interface HousingService {
 
 
     @GET("getLttotPblancList")
-    Call<Response> getHousingList(@Query("serviceKey") String serviceKey);
+    Call<Response> getHousingList(@Query("serviceKey") String serviceKey,
+                                  @Query("startmonth") String startMonth,
+                                  @Query("endmonth") String endMonth,
+                                  @Query("sido") String sido);
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Define.BASE_URL)

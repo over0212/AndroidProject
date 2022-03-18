@@ -16,12 +16,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import com.project.housing.databinding.ActivityMainBinding;
 import com.project.housing.interfaces.OnSidoItemClickListener;
+import com.project.housing.models.response.Response;
+import com.project.housing.repository.HousingService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity implements OnSidoItemClickListener {
 
     private static final String TAG = "TAG";
     private ActivityMainBinding binding;
     private SidoBottomSheetFragment sidoBottomSheetFragment;
+    private HousingService service;
 
     // 날짜를 구하기 위해 Calendar 선언
     private final Calendar calendar = Calendar.getInstance();
@@ -30,6 +36,10 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     // 메서드에서 오늘 or 내일 날짜를 설정하기 위한 flag 값
     private final int dateFlag = 0;
+
+    private String startMonth;
+    private String endMonth;
+    private String sidoName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +54,17 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     private void initData() {
         binding.startDate.setText(getTime(0));
         binding.endDate.setText(getTime(1));
-
+        service = HousingService.retrofit.create(HousingService.class);
     }
 
     private void addEventListener() {
         // 공고 시작 날짜
         binding.startDate.setOnClickListener(view -> {
-            callDatePickerDialog(binding.startDate);
+            callDatePickerDialog(binding.startDate, "start");
         });
         // 공고 마감 날짜
         binding.endDate.setOnClickListener(view -> {
-            callDatePickerDialog(binding.endDate);
+            callDatePickerDialog(binding.endDate, "end");
         });
 
         binding.sidoBtn.setOnClickListener(view -> {
@@ -63,6 +73,19 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
 
         binding.searchBtn.setOnClickListener(view -> {
 
+            service.getHousingList(HousingService.decodingKey, startMonth, endMonth, sidoName).enqueue(new Callback<Response>() {
+                @Override
+                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                    if (response.isSuccessful()){
+                        Log.d("TAG", response.body().getBody().toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Response> call, Throwable t) {
+
+                }
+            });
         });
     }
     
@@ -74,16 +97,22 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     @Override
     public void onItemClick(String sidoName) {
         binding.sidoBtn.setText(sidoName);
+        this.sidoName = sidoName;
         sidoBottomSheetFragment.dismiss();
     }
 
-    private void callDatePickerDialog(Button button) {
+    private void callDatePickerDialog(Button button, String Type) {
         new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @SuppressLint("DefaultLocale")
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 button.setText(String.format("%d-%02d-%02d", i, i1 + 1, i2));
-                Log.d(TAG, String.format("%d-%02d-%02d", i, i1 + 1, i2));
+                Log.d(TAG, String.format("%d%02d", i, i1 + 1));
+                if(Type.equals("start")) {
+                    startMonth = String.format("%d%02d", i, i1 + 1);
+                }else{
+                    endMonth = String.format("%d%02d", i, i1 + 1);
+                }
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         ).show();
