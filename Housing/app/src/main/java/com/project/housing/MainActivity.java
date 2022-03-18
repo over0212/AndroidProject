@@ -1,19 +1,22 @@
 package com.project.housing;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.project.housing.databinding.ActivityMainBinding;
+import com.project.housing.interfaces.OnSidoItemClickListener;
 
-import java.util.Calendar;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnSidoItemClickListener {
 
     private ActivityMainBinding binding;
+    private SidoBottomSheetFragment sidoBottomSheetFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initData() {
+
 
     }
 
@@ -40,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.sidoBtn.setOnClickListener(view -> {
-
+            addBottomSheetDialog();
         });
 
         binding.searchBtn.setOnClickListener(view -> {
@@ -49,15 +53,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // date picker 불러오기
-    private void callDatePickerDialog(View view){
+    private void callDatePickerDialog(View view) {
         DatePickerFragment pickerFragment = DatePickerFragment.getInstance();
         pickerFragment.show(getSupportFragmentManager(), pickerFragment.getTag());
     }
 
-    public void processDatePickerResult(int year, int month, int day){
-        String month_string = Integer.toString(month+1);
+    public void processDatePickerResult(int year, int month, int day) {
+        String month_string = Integer.toString(month + 1);
         String day_string = Integer.toString(day);
         String year_string = Integer.toString(year);
 
     }
+
+    private void addBottomSheetDialog() {
+        sidoBottomSheetFragment = SidoBottomSheetFragment.getInstance(this);
+        sidoBottomSheetFragment.show(getSupportFragmentManager(), SidoBottomSheetFragment.class.getName());
+    }
+
+    @Override
+    public void onItemClick(String sidoName) {
+        binding.sidoBtn.setText(sidoName);
+        sidoBottomSheetFragment.dismiss();
+    }
+
 }
