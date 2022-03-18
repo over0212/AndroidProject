@@ -1,3 +1,4 @@
+/*
 package com.project.housing;
 
 import android.app.DatePickerDialog;
@@ -60,4 +61,4 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.processDatePickerResult(year, month, day);
     }
-}
+}*/

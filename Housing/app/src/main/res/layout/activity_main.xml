@@ -4,27 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F3F4"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#6667AB"
+        android:background="#F0F3F4"
         android:padding="20dp">
+
 
         <ImageView
             android:id="@+id/logo"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginBottom="80dp"
-            android:background="@color/white"
+            android:src="@drawable/home_logo"
             app:layout_constraintBottom_toTopOf="@id/dateContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.3"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:src="@color/white" />
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <LinearLayout
             android:id="@+id/dateContainer"
@@ -45,9 +46,10 @@
                 android:layout_marginRight="8dp"
                 android:gravity="center"
                 android:text="날짜"
-                android:textColor="@color/white"
+                android:textColor="#41444B"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
 
             <Button
                 android:id="@+id/startDate"
@@ -56,8 +58,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight="1.25"
                 android:backgroundTint="@color/white"
-                android:text="2022-03-05"
-                android:textColor="#6667AB"
+                android:textColor="#41444B"
                 android:textSize="16sp"
                 tools:text="2022-03-05" />
 
@@ -67,12 +68,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.25"
                 android:backgroundTint="@color/white"
-                android:text="2022-03-05"
-                android:textColor="#6667AB"
+                android:textColor="#41444B"
                 android:textSize="16sp"
                 tools:text="2022-03-06" />
 
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/sidoContainer"
@@ -93,7 +94,7 @@
                 android:layout_marginRight="8dp"
                 android:gravity="center"
                 android:text="지역"
-                android:textColor="@color/white"
+                android:textColor="#41444B"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -102,8 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
-                android:text=""
-                android:textColor="#6667AB"
+                android:textColor="#41444B"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:text="부산광역시" />
@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:text="검           색"
-            android:textColor="#6667AB"
+            android:textColor="#41444B"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -124,7 +124,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sidoContainer" />
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <LinearLayout
         android:id="@+id/bottomSheetContainer"
@@ -132,5 +134,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="vertical" />
+
 
 </FrameLayout>
