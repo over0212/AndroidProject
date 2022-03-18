@@ -4,32 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#6667AB"
+    android:background="#F0F3F4"
     android:padding="20dp"
     tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/logo"
-        app:layout_constraintVertical_bias="0.3"
-        android:layout_marginBottom="80dp"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_marginBottom="80dp"
+        android:src="@drawable/home_logo"
         app:layout_constraintBottom_toTopOf="@id/dateContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/white"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:src="@color/white" />
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <LinearLayout
-        android:layout_marginBottom="40dp"
-        android:gravity="center"
         android:id="@+id/dateContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="5dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
         android:orientation="horizontal"
+        android:paddingStart="5dp"
         app:layout_constraintBottom_toTopOf="@id/sidoContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,45 +40,45 @@
             android:layout_marginRight="8dp"
             android:gravity="center"
             android:text="날짜"
-            android:textColor="@color/white"
+            android:textColor="#41444B"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/startDate"
-            android:textSize="16sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
-            android:textColor="#6667AB"
-            android:backgroundTint="@color/white"
             android:layout_weight="1.25"
+            android:backgroundTint="@color/white"
+            android:textColor="#41444B"
+            android:textSize="16sp"
             tools:text="2022-03-05" />
 
         <Button
-            android:textSize="16sp"
             android:id="@+id/endDate"
-            android:backgroundTint="@color/white"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="#6667AB"
             android:layout_weight="1.25"
+            android:backgroundTint="@color/white"
+            android:textColor="#41444B"
+            android:textSize="16sp"
             tools:text="2022-03-06" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginBottom="40dp"
-        android:padding="5dp"
-        android:gravity="center"
         android:id="@+id/sidoContainer"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateContainer"
-        app:layout_constraintBottom_toTopOf="@id/searchBtn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@id/searchBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateContainer">
 
         <TextView
             android:layout_width="70dp"
@@ -87,35 +86,35 @@
             android:layout_marginRight="8dp"
             android:gravity="center"
             android:text="지역"
-            android:textColor="@color/white"
+            android:textColor="#41444B"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/sidoBtn"
-            android:text=""
-            tools:text="부산광역시"
-            android:backgroundTint="@color/white"
-            android:textSize="16sp"
-            android:textColor="#6667AB"
-            android:textStyle="bold"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:text=""
+            android:textColor="#41444B"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="부산광역시" />
 
     </LinearLayout>
 
     <Button
-        android:backgroundTint="@color/white"
-        android:textColor="#6667AB"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:text="검           색"
         android:id="@+id/searchBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sidoContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:text="검           색"
+        android:textColor="#41444B"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sidoContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
