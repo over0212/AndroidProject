@@ -7,15 +7,23 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
 import com.project.housing.databinding.ActivityMainBinding;
 import com.project.housing.interfaces.OnSidoItemClickListener;
+import com.project.housing.models.request.ReqHousingList;
+import com.project.housing.models.response.Item;
+import com.project.housing.models.response.Items;
 import com.project.housing.models.response.Response;
 import com.project.housing.repository.HousingService;
 
@@ -77,15 +85,22 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                     if (response.isSuccessful()){
-                        Log.d("TAG", response.body().getBody().toString());
+                        Log.d("TAG", response.body().getBody().getItems().getItem().get(0).toString());
+                        Intent intent = new Intent(getApplicationContext(), HousingListActivity.class);
+                        Items items = response.body().getBody().getItems();
+//                        ArrayList<Item> itemArrayList = (ArrayList<Item>) items.getItem();
+                        intent.putExtra("serialHousingListObj", items);
+                        intent.putExtra("serialReqObj", new ReqHousingList(startMonth, endMonth, sidoName));
+                        startActivity(intent);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Response> call, Throwable t) {
-
+                    Log.d("TAG", t.getMessage());
                 }
             });
+
         });
     }
     

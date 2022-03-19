@@ -50,6 +50,9 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
+    // okhttp interceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:3.4.0"
+
     //xml parser
     implementation 'com.tickaroo.tikxml:annotation:0.8.13'
     implementation 'com.tickaroo.tikxml:core:0.8.13'

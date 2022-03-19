@@ -3,8 +3,10 @@ package com.project.housing.models.response;
 import com.tickaroo.tikxml.annotation.PropertyElement;
 import com.tickaroo.tikxml.annotation.Xml;
 
+import java.io.Serializable;
+
 @Xml(name = "item")
-public class Item {
+public class Item implements Serializable{
     @PropertyElement(name="bsnsMbyNm") // 건설업체
     private String buildCompanyName;
     @PropertyElement(name="houseDtlSecdNm") // 주택구분

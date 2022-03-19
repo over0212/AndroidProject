@@ -1,14 +1,49 @@
 package com.project.housing;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.LinearLayout;
+
+import com.project.housing.adapter.HousingListAdapter;
+import com.project.housing.databinding.ActivityHousingListBinding;
+import com.project.housing.models.request.ReqHousingList;
+import com.project.housing.models.response.Item;
+import com.project.housing.models.response.Items;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HousingListActivity extends AppCompatActivity {
+
+    private HousingListAdapter adapter;
+    private ActivityHousingListBinding binding;
+    private ReqHousingList housingList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_housing_list);
+        binding = ActivityHousingListBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        if (getIntent() != null){
+            Items items = (Items) getIntent().getSerializableExtra("serialHousingListObj");
+            List<Item> itemList = items.getItem();
+            Log.d("TAG", itemList.get(0).toString());
+
+            adapter = new HousingListAdapter(this, itemList);
+            LinearLayoutManager manager = new LinearLayoutManager(this);
+
+            binding.recyclerView.setLayoutManager(manager);
+            binding.recyclerView.setAdapter(adapter);
+            binding.recyclerView.hasFixedSize();
+
+            housingList = (ReqHousingList) getIntent().getSerializableExtra("serialReqObj");
+            binding.topAppBar.startDateTv.setText(housingList.getStartMonth());
+            binding.topAppBar.endDateTv.setText(housingList.getEndMonth());
+            binding.topAppBar.sidoTv.setText(housingList.getSidoName());
+        }
     }
 }
