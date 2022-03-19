@@ -16,18 +16,20 @@
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <TextView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="15dp"
-            android:background="@color/black"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="17dp"
-            android:textStyle="bold"
-            tools:text="임대" />
+<!--        <TextView-->
+<!--            android:id="@+id/rentOrSaleNameTv"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_marginEnd="15dp"-->
+<!--            android:background="@color/black"-->
+<!--            android:gravity="center"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="17dp"-->
+<!--            android:textStyle="bold"-->
+<!--            tools:text="임대" />-->
 
         <LinearLayout
+            android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -63,6 +65,7 @@
                     android:textColor="@color/textColor_333" />
 
                 <TextView
+                    android:id="@+id/recruitmentNoticeDateTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/textColor_333"

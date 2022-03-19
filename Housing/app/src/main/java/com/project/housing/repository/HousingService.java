@@ -7,7 +7,6 @@ import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -24,6 +23,8 @@ public interface HousingService {
                                   @Query("startmonth") String startMonth,
                                   @Query("endmonth") String endMonth,
                                   @Query("sido") String sido);
+
+
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Define.BASE_URL)
