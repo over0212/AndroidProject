@@ -23,6 +23,7 @@ public class SidoBottomSheetFragment extends BottomSheetDialogFragment {
 
     private FragmentBottomSheetSidoBinding binding;
     private SidoItemAdapter adapter;
+
     private static SidoBottomSheetFragment sidoBottomSheetFragment;
     private static OnSidoItemClickListener onSidoItemClickListener;
 

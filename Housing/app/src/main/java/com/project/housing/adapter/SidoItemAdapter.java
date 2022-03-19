@@ -28,7 +28,6 @@ public class SidoItemAdapter extends RecyclerView.Adapter<SidoItemAdapter.ViewHo
         this.context = context;
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
