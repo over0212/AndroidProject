@@ -24,6 +24,7 @@ public class SidoBottomSheetFragment extends BottomSheetDialogFragment {
     private FragmentBottomSheetSidoBinding binding;
     private SidoItemAdapter adapter;
 
+    // 싱글톤 패턴으로 프래그먼트 생성
     private static SidoBottomSheetFragment sidoBottomSheetFragment;
     private static OnSidoItemClickListener onSidoItemClickListener;
 

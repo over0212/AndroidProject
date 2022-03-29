@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:text="※ 검색은 오늘 기준으로 ±1년까지 검색됩니다."
+                android:text="※ 검색은 오늘 기준으로 ± 1년까지 검색됩니다."
                 android:textColor="#E3051E"
                 app:layout_constraintBottom_toTopOf="@id/sidoSearchTv"
                 app:layout_constraintEnd_toEndOf="@id/dateContainer"
