@@ -39,7 +39,8 @@ public interface HousingService {
     Call<Response> getHousingList(@Query("ServiceKey") String serviceKey,
                                   @Query("startmonth") String startMonth,
                                   @Query("endmonth") String endMonth,
-                                  @Query("sido") String sido);
+                                  @Query("sido") String sido,
+                                  @Query("pageNo") int page);
 
     @GET("getAPTLttotPblancDetail")
             Call<Response> getAPTListDetail(@Query("ServiceKey") String serviceKey,

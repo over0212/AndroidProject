@@ -7,7 +7,6 @@ public class ReqHousingList implements Serializable {
     // 공통으로 들어가는 요청(List 로 가져오는 간략한 데이터)
     private String startMonth;
     private String endMonth;
-    
     // APT
     private String sidoName;
     // 오피스텔
@@ -31,5 +30,14 @@ public class ReqHousingList implements Serializable {
 
     public String getSidoName() {
         return sidoName;
+    }
+
+    @Override
+    public String toString() {
+        return "ReqHousingList{" +
+                "startMonth='" + startMonth + '\'' +
+                ", endMonth='" + endMonth + '\'' +
+                ", sidoName='" + sidoName + '\'' +
+                '}';
     }
 }

@@ -24,6 +24,7 @@ public class HousingDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         getDetailData();
+        addBackButtonEventListener();
     }
 
     private void getDetailData() {
@@ -86,13 +87,17 @@ public class HousingDetailActivity extends AppCompatActivity {
                 binding.specialReceiptEndDate.setText(item.getSpecialReceiptEndDate());
             }
             // 홈페이지
-            binding.homepageAddress.setText(item.getHomepageAddress());
+            if (item.getHomepageAddress() == null) {
+                binding.box11Homepage.setVisibility(View.GONE);
+            } else {
+                binding.homepageAddress.setText(item.getHomepageAddress());
+            }
             // 공급주소
             binding.housePlaceAddr.setText(item.getHouseAddress());
         }
     }
 
-    private void addBackButtonEventListener(){
+    private void addBackButtonEventListener() {
         binding.detailAppBar.backBtn.setOnClickListener(view -> {
             finish();
         });

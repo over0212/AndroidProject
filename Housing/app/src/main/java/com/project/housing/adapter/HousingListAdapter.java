@@ -136,4 +136,10 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
             recruitmentNoticeDate.setText(noticeDateYear + "." + noticeDateMonth + "." + noticeDateDay);
         }
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void addItem(List<Item> addList){
+        itemArrayList.addAll(itemArrayList.size(), addList);
+        notifyDataSetChanged();
+    }
 }

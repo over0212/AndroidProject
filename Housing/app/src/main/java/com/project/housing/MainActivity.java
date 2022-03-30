@@ -113,15 +113,16 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
             if (selectedSidoName.equals(allSidoName)){
                 selectedSidoName = null;
             }
-            service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, selectedSidoName).enqueue(new Callback<Response>() {
+            service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, selectedSidoName, 1).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                     if (response.isSuccessful()) {
-                        if (response.body().getBody() != null && response.body().getBody().getNumOfRows() != 0) {
+                        if (response.body().getBody() != null && response.body().getBody().getTotalCount() != 0) {
                             Intent intent = new Intent(getApplicationContext(), HousingListActivity.class);
                             Items items = response.body().getBody().getItems();
                             intent.putExtra("serialHousingListObj", items);
-                            intent.putExtra("serialReqObj", new ReqHousingList(formatStartMonth, formatEndMonth, selectedSidoName));
+                            intent.putExtra("serialReqObj", new ReqHousingList(startMonth, endMonth, selectedSidoName));
+                            intent.putExtra("totalCount", response.body().getBody().getTotalCount());
                             startActivity(intent);
                         } else{
                             showAlertDialog();
@@ -177,11 +178,11 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
                 String formattedDate = String.format("%d-%02d", i, i1 + 1, i2);
                 button.setText(formattedDate);
                 if (Type.equals("start")) {
-                    startMonth = String.format("%d%02d", i, i1 + 1);
-                    formatStartMonth = formattedDate;
+                    formatStartMonth = String.format("%d%02d", i, i1 + 1);
+                    startMonth = formattedDate;
                 } else {
-                    endMonth = String.format("%d%02d", i, i1 + 1);
-                    formatEndMonth = formattedDate;
+                    formatEndMonth = String.format("%d%02d", i, i1 + 1);
+                    endMonth = formattedDate;
                 }
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
