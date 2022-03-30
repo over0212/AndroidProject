@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                     if (response.isSuccessful()) {
-                        if (response.body().getBody() != null && response.body().getBody().getNumOfRows() != 0) {
+                        if (response.body().getBody() != null && response.body().getBody().getTotalCount() > 0) {
                             Intent intent = new Intent(getApplicationContext(), HousingListActivity.class);
                             Items items = response.body().getBody().getItems();
                             intent.putExtra("serialHousingListObj", items);
