@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         service = HousingService.retrofit.create(HousingService.class);
     }
 
+    @SuppressLint("DefaultLocale")
     private void addEventListener() {
         // 공고 시작 날짜
         binding.startDate.setOnClickListener(view -> {
@@ -88,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         });
         // 검색
         binding.searchBtn.setOnClickListener(view -> {
-            Log.d(TAG, "start : " + startMonth + "end : " + endMonth);
             service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, sidoName).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -155,13 +155,11 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 button.setText(String.format("%d-%02d-%02d", i, i1 + 1, i2));
+
                 if (Type.equals("start")) {
-                    startMonth = String.format("%d%02d", i, i1 + 1);
                     originStartDate = String.format("%d-%02d-%02d", i, i1 + 1, i2);
                 } else {
-                    endMonth = String.format("%d%02d", i, i1 + 1);
                     originEndDate = String.format("%d-%02d-%02d", i, i1 + 1, i2);
-
                 }
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
@@ -180,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         } else {
             calendar.add(calendar.DATE, +1);
             date = dateFormat.format(calendar.getTime());
-            Log.d(TAG, date);
             return date;
         }
     }
