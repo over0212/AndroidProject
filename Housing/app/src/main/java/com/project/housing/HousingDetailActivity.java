@@ -91,4 +91,10 @@ public class HousingDetailActivity extends AppCompatActivity {
             binding.housePlaceAddr.setText(item.getHouseAddress());
         }
     }
+
+    private void addBackButtonEventListener(){
+        binding.detailAppBar.backBtn.setOnClickListener(view -> {
+            finish();
+        });
+    }
 }
