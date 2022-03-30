@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         service = HousingService.retrofit.create(HousingService.class);
     }
 
+    @SuppressLint("DefaultLocale")
     private void addEventListener() {
         // 공고 시작 날짜
         binding.startDate.setOnClickListener(view -> {
@@ -86,9 +87,6 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         });
         // 검색
         binding.searchBtn.setOnClickListener(view -> {
-            Log.d(TAG, "start : " + startMonth + ", end : " + endMonth);
-            startMonth = binding.startDate.getText().toString();
-            endMonth = binding.endDate.getText().toString();
             service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, sidoName).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -174,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         } else {
             calendar.add(calendar.DATE, +1);
             date = dateFormat.format(calendar.getTime());
-            Log.d(TAG, date);
             return date;
         }
     }
