@@ -29,31 +29,31 @@ public class Item implements Serializable {
     private String rentOrSaleName;
     @PropertyElement(name = "sido") // 공급지역
     private String sido;
-    @PropertyElement(name = "cntrctcnclsbgnde")
+    @PropertyElement(name = "cntrctcnclsbgnde") // 계약 시작일
     private String startContract;
-    @PropertyElement(name = "cntrctcnclsendde")
+    @PropertyElement(name = "cntrctcnclsendde") // 계약 종료일
     private String endContract;
-    @PropertyElement(name = "gnrlrnk1crsparearceptpd")
+    @PropertyElement(name = "gnrlrnk1crsparearceptpd") // 1순위 접수일 해당지역
     private String rnk1CrspArea;
-    @PropertyElement(name = "gnrlrnk1etcggrcptdepd")
+    @PropertyElement(name = "gnrlrnk1etcggrcptdepd") // 1순위 접수일 경기지역
     private String rnk1EtcGg;
-    @PropertyElement(name = "gnrlrnk1etcarearcptdepd")
+    @PropertyElement(name = "gnrlrnk1etcarearcptdepd") // 1순위 접수일 기타지역
     private String rnk1EtcArea;
-    @PropertyElement(name = "gnrlrnk2crsparearceptpd")
+    @PropertyElement(name = "gnrlrnk2crsparearceptpd") // 2순위 접수일 해당지역
     private String rnk2CrspArea;
-    @PropertyElement(name = "gnrlrnk2etcggrcptdepd")
+    @PropertyElement(name = "gnrlrnk2etcggrcptdepd") // 2순위 접수일 경기지역
     private String rnk2EtcGg;
-    @PropertyElement(name = "gnrlrnk2etcarearcptdepd")
+    @PropertyElement(name = "gnrlrnk2etcarearcptdepd") // 2순위 접수일 기타지역
     private String rnk2EtcArea;
-    @PropertyElement(name = "hmpgadres")
+    @PropertyElement(name = "hmpgadres") // 홈페이지
     private String homepageAddress;
-    @PropertyElement(name = "hssplyadres")
+    @PropertyElement(name = "hssplyadres") // 공급위치(주소)
     private String houseAddress;
-    @PropertyElement(name = "spsplyrceptbgnde")
+    @PropertyElement(name = "spsplyrceptbgnde") // 특별 공급 접수 시작일
     private String specialReceiptStartDate;
-    @PropertyElement(name = "spsplyrceptendde")
+    @PropertyElement(name = "spsplyrceptendde") // 특별 공급 접수 종료일
     private String specialReceiptEndDate;
-    @PropertyElement(name = "totsuplyhshldco")
+    @PropertyElement(name = "totsuplyhshldco") // 공급 규모
     private String totalSupply;
 
     public String getBuildCompanyName() {

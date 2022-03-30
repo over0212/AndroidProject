@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     }
 
     private void initData() {
-        binding.startDate.setText(getTime(0));
-        binding.endDate.setText(getTime(1));
+        startMonth = getTime(0);
+        endMonth = getTime(1);
+        binding.startDate.setText(startMonth);
+        binding.endDate.setText(endMonth);
         // retrofit 초기화
         service = HousingService.retrofit.create(HousingService.class);
     }
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         });
         // 검색
         binding.searchBtn.setOnClickListener(view -> {
+            Log.d(TAG, "start : " + startMonth + "end : " + endMonth);
             service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, sidoName).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -177,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         } else {
             calendar.add(calendar.DATE, +1);
             date = dateFormat.format(calendar.getTime());
+            Log.d(TAG, date);
             return date;
         }
     }

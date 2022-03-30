@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,17 +61,17 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
             service.getAPTListDetail(HousingService.decodingKey_J, houseManageNum, noticeNum).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                    if (response.isSuccessful()){
-                        Item item1 = (Item) response.body().getBody().getItems().getItem().get(0);
+                    Log.d(TAG, "response code : " + response.code());
+                    if (response.isSuccessful()) {
                         Intent intent = new Intent(context, HousingDetailActivity.class);
-                        intent.putExtra("detailObj", item1);
+                        intent.putExtra("detailObj", item);
                         context.startActivity(intent);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Response> call, Throwable t) {
-
+                    Toast.makeText(context, "네트워크 통신 연결이 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -82,21 +83,22 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
         return itemArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
+        View itemView;
         TextView companyNameTv;
         TextView houseNameTv;
         TextView recruitmentNoticeDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            this.itemView = itemView;
             companyNameTv = itemView.findViewById(R.id.companyNameTv);
             houseNameTv = itemView.findViewById(R.id.houseNameTv);
             recruitmentNoticeDate = itemView.findViewById(R.id.recruitmentNoticeDateTv);
         }
 
-        private void setItem(Item item){
+        private void setItem(Item item) {
             companyNameTv.setText(item.getRentOrSaleName());
             houseNameTv.setText(item.getHouseName());
             recruitmentNoticeDate.setText(String.valueOf(item.getRecruitmentNoticeDate()));
