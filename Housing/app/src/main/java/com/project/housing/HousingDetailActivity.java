@@ -27,4 +27,10 @@ public class HousingDetailActivity extends AppCompatActivity {
             Log.d(TAG, item.toString());
         }
     }
+
+    private void addBackButtonEventListener(){
+        binding.detailAppBar.backBtn.setOnClickListener(view -> {
+            finish();
+        });
+    }
 }

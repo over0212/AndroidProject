@@ -50,25 +50,48 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     // main 에 바로 띄어주기 위해 선언
     private String startMonth;
     private String endMonth;
-    private String sidoName;
+    private String allSidoName;
+    private String formatStartMonth;
+    private String formatEndMonth;
+    private String selectedSidoName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         initData();
         addEventListener();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("TAG", "on start!");
+        resetData();
+        bindingViewAndData();
+    }
+
     private void initData() {
-        startMonth = getTime(0);
-        endMonth = getTime(1);
-        binding.startDate.setText(startMonth);
-        binding.endDate.setText(endMonth);
+        resetData();
+        bindingViewAndData();
         // retrofit 초기화
         service = HousingService.retrofit.create(HousingService.class);
+    }
+
+    private void resetData(){
+        startMonth = getTime(0);
+        endMonth = getTime(1);
+        allSidoName = "전국";
+        formatStartMonth = startMonth;
+        formatEndMonth = endMonth;
+        selectedSidoName = allSidoName;
+    }
+
+    private void bindingViewAndData(){
+        binding.startDate.setText(startMonth);
+        binding.endDate.setText(endMonth);
+        binding.sidoBtn.setText(allSidoName);
     }
 
     @SuppressLint("DefaultLocale")
@@ -87,28 +110,31 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         });
         // 검색
         binding.searchBtn.setOnClickListener(view -> {
-            service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, sidoName).enqueue(new Callback<Response>() {
+            if (selectedSidoName.equals(allSidoName)){
+                selectedSidoName = null;
+            }
+            service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, selectedSidoName).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                    Log.d(TAG, "startMonth : " + startMonth);
-                    Log.d(TAG, "endMonth : " + endMonth);
-                    Log.d(TAG, "sidoName : " + sidoName);
                     if (response.isSuccessful()) {
-                        if (response.body().getBody() != null) {
+                        if (response.body().getBody() != null && response.body().getBody().getNumOfRows() != 0) {
                             Intent intent = new Intent(getApplicationContext(), HousingListActivity.class);
                             Items items = response.body().getBody().getItems();
                             intent.putExtra("serialHousingListObj", items);
-                            intent.putExtra("serialReqObj", new ReqHousingList(startMonth, endMonth, sidoName));
+                            intent.putExtra("serialReqObj", new ReqHousingList(formatStartMonth, formatEndMonth, selectedSidoName));
                             startActivity(intent);
                         } else{
                             showAlertDialog();
                         }
+                    }else{
+                        showAlertDialog();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Response> call, Throwable t) {
                     Log.d("TAG", t.getMessage());
+                    showAlertDialog();
                 }
             });
 
@@ -138,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     @Override
     public void onItemClick(String sidoName) {
         binding.sidoBtn.setText(sidoName);
-        this.sidoName = sidoName;
+        this.selectedSidoName = sidoName;
         sidoBottomSheetFragment.dismiss();
     }
 
@@ -148,31 +174,28 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
             @SuppressLint("DefaultLocale")
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                button.setText(String.format("%d-%02d", i, i1 + 1, i2));
+                String formattedDate = String.format("%d-%02d", i, i1 + 1, i2);
+                button.setText(formattedDate);
                 if (Type.equals("start")) {
                     startMonth = String.format("%d%02d", i, i1 + 1);
+                    formatStartMonth = formattedDate;
                 } else {
                     endMonth = String.format("%d%02d", i, i1 + 1);
-
+                    formatEndMonth = formattedDate;
                 }
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         ).show();
     }
 
-    // main 의 화면이 보였을 때 오늘 날짜와 내일 날짜를 보여주는 기능
+    // month 초기화 메서드
     private String getTime(int flag) {
-        // 오늘 날짜
-        // 처음 button 에 입력할 변수
-        String date;
+        Calendar calendarForInit = Calendar.getInstance();
         if (flag == 0) {
-            date = dateFormat.format(calendar.getTime());
-            return date;
-            // 내일 날짜
-        } else {
-            calendar.add(calendar.DATE, +1);
-            date = dateFormat.format(calendar.getTime());
-            return date;
+            // 이전년도
+            calendarForInit.add(calendar.YEAR, -1);
+            calendarForInit.add(calendar.MONTH, +1);
         }
+        return dateFormat.format(calendarForInit.getTime());
     }
 }

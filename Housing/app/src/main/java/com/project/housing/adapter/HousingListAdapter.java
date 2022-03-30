@@ -1,11 +1,13 @@
 package com.project.housing.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.housing.HousingDetailActivity;
 import com.project.housing.R;
-import com.project.housing.databinding.ActivityHousingListBinding;
-import com.project.housing.models.request.ReqHousingList;
 import com.project.housing.models.response.Item;
 import com.project.housing.models.response.Response;
 import com.project.housing.repository.HousingService;
@@ -35,10 +35,12 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
     private Context context;
     private List<Item> itemArrayList;
     private HousingService service;
+    private Boolean isSearchAll;
 
-    public HousingListAdapter(Context context, List<Item> itemArrayList) {
+    public HousingListAdapter(Context context, List<Item> itemArrayList, Boolean isSearchAll) {
         this.context = context;
         this.itemArrayList = itemArrayList;
+        this.isSearchAll = isSearchAll;
     }
 
     @NonNull
@@ -86,22 +88,39 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         View itemView;
-        TextView companyNameTv;
+        LinearLayout listSidoContainer;
+        TextView rentOrSaleNameTv;
+        TextView sidoNameTv;
         TextView houseNameTv;
         TextView recruitmentNoticeDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
-            companyNameTv = itemView.findViewById(R.id.companyNameTv);
+            rentOrSaleNameTv = itemView.findViewById(R.id.rentOrSaleNameTv);
+            listSidoContainer = itemView.findViewById(R.id.listSidoContainer);
+            sidoNameTv = itemView.findViewById(R.id.sidoNameTv);
             houseNameTv = itemView.findViewById(R.id.houseNameTv);
             recruitmentNoticeDate = itemView.findViewById(R.id.recruitmentNoticeDateTv);
         }
 
+        @SuppressLint("SetTextI18n")
         private void setItem(Item item) {
-            companyNameTv.setText(item.getRentOrSaleName());
+            if (isSearchAll){
+                listSidoContainer.setVisibility(View.VISIBLE);
+                sidoNameTv.setText(item.getSido());
+            }else{
+                listSidoContainer.setVisibility(View.GONE);
+            }
+
+            rentOrSaleNameTv.setText(item.getRentOrSaleName());
             houseNameTv.setText(item.getHouseName());
-            recruitmentNoticeDate.setText(String.valueOf(item.getRecruitmentNoticeDate()));
+
+            String noticeDate = item.getRecruitmentNoticeDate();
+            String noticeDateYear = noticeDate.substring(0, 4);
+            String noticeDateMonth = noticeDate.substring(4, 6);
+            String noticeDateDay = noticeDate.substring(6);
+            recruitmentNoticeDate.setText(noticeDateYear + "." + noticeDateMonth + "." + noticeDateDay);
         }
     }
 }
