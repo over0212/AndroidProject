@@ -44,15 +44,13 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     private final Calendar calendar = Calendar.getInstance();
     // 날짜를 원하는 pattern 으로 변경하기 위해 설정
     @SuppressLint("SimpleDateFormat")
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     // 메서드에서 오늘 or 내일 날짜를 설정하기 위한 flag 값
     private final int dateFlag = 0;
     // main 에 바로 띄어주기 위해 선언
     private String startMonth;
     private String endMonth;
     private String sidoName;
-    private String originStartDate;
-    private String originEndDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +86,9 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         });
         // 검색
         binding.searchBtn.setOnClickListener(view -> {
-            Log.d(TAG, "start : " + startMonth + "end : " + endMonth);
+            Log.d(TAG, "start : " + startMonth + ", end : " + endMonth);
+            startMonth = binding.startDate.getText().toString();
+            endMonth = binding.endDate.getText().toString();
             service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, sidoName).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -97,14 +97,10 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
                     Log.d(TAG, "sidoName : " + sidoName);
                     if (response.isSuccessful()) {
                         if (response.body().getBody() != null) {
-//                            Log.d(TAG, response.body().getBody().getItems().getItem().toString());
                             Intent intent = new Intent(getApplicationContext(), HousingListActivity.class);
                             Items items = response.body().getBody().getItems();
-//                        ArrayList<Item> itemArrayList = (ArrayList<Item>) items.getItem();
                             intent.putExtra("serialHousingListObj", items);
                             intent.putExtra("serialReqObj", new ReqHousingList(startMonth, endMonth, sidoName));
-                            intent.putExtra("originSdate", originStartDate);
-                            intent.putExtra("originEdate", originEndDate);
                             startActivity(intent);
                         } else{
                             showAlertDialog();
@@ -154,13 +150,11 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
             @SuppressLint("DefaultLocale")
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                button.setText(String.format("%d-%02d-%02d", i, i1 + 1, i2));
+                button.setText(String.format("%d-%02d", i, i1 + 1, i2));
                 if (Type.equals("start")) {
                     startMonth = String.format("%d%02d", i, i1 + 1);
-                    originStartDate = String.format("%d-%02d-%02d", i, i1 + 1, i2);
                 } else {
                     endMonth = String.format("%d%02d", i, i1 + 1);
-                    originEndDate = String.format("%d-%02d-%02d", i, i1 + 1, i2);
 
                 }
             }

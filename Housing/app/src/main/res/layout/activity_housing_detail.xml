@@ -55,17 +55,45 @@
 
             </LinearLayout>
 
-
             <LinearLayout
                 android:id="@+id/box2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:weightSum="2"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@id/box3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/box1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="주택 명"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/houseName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    tools:text="에일린의 뜰" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/box3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:weightSum="2"
+                app:layout_constraintBottom_toTopOf="@id/box4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/box2">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -118,15 +146,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/box3"
+                android:id="@+id/box4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@id/box4"
+                app:layout_constraintBottom_toTopOf="@id/box5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/box2">
+                app:layout_constraintTop_toBottomOf="@id/box3">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -147,16 +175,16 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/box4"
+                android:id="@+id/box5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2"
-                app:layout_constraintBottom_toTopOf="@id/box5"
+                app:layout_constraintBottom_toTopOf="@id/box6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/box3">
+                app:layout_constraintTop_toBottomOf="@id/box4">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -208,12 +236,12 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/box5"
+                android:id="@+id/box6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@id/box6"
+                app:layout_constraintBottom_toTopOf="@id/box7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/box5">
@@ -237,7 +265,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/box6"
+                android:id="@+id/box7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
@@ -245,7 +273,7 @@
                 app:layout_constraintBottom_toTopOf="@id/viewMap"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/box5">
+                app:layout_constraintTop_toBottomOf="@id/box6">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -274,7 +302,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/box6" />
+                app:layout_constraintTop_toBottomOf="@id/box7" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

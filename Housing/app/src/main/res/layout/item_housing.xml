@@ -40,7 +40,7 @@
                 android:id="@+id/companyNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="14sp"
                 android:layout_marginBottom="8dp"
                 tools:text="분양주택" />
 

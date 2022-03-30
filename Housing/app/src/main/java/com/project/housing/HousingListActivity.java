@@ -49,13 +49,16 @@ public class HousingListActivity extends AppCompatActivity {
             binding.recyclerView.hasFixedSize();
 
             housingList = (ReqHousingList) getIntent().getSerializableExtra("serialReqObj");
-            binding.topAppBar.startDateTv.setText(getIntent().getStringExtra("originSdate"));
-            binding.topAppBar.endDateTv.setText(getIntent().getStringExtra("originEdate"));
+//            binding.topAppBar.startDateTv.setText(getIntent().getStringExtra("originSdate"));
+//            binding.topAppBar.endDateTv.setText(getIntent().getStringExtra("originEdate"));
             if (housingList.getSidoName() == null) {
                 binding.topAppBar.sidoTv.setText("전국");
             } else {
                 binding.topAppBar.sidoTv.setText(housingList.getSidoName());
             }
+
+            binding.topAppBar.startDateTv.setText(housingList.getStartMonth());
+            binding.topAppBar.endDateTv.setText(housingList.getEndMonth());
         }
     }
 }
