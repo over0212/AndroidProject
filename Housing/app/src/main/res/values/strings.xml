@@ -19,4 +19,26 @@
     <string name="chungnam">충청남도</string>
     <string name="jeonnam">전라남도</string>
     <string name="gyeongnam">경상남도</string>
+    <string name="str_notice_number">공고 번호</string>
+    <string name="str_house_name">주택 명</string>
+    <string name="str_house_manage_number">주택 관리번호</string>
+    <string name="str_section_name">주택 구분</string>
+    <string name="str_rent_or_sale">분양 / 임대</string>
+    <string name="str_build_company">건설업체</string>
+    <string name="str_total_supply">공급 규모</string>
+    <string name="str_receipt_start">청약 접수 시작일</string>
+    <string name="str_receipt_end">청약 접수 종료일</string>
+    <string name="str_winner">당첨자 발표</string>
+    <string name="str_contract_start">계약 시작일</string>
+    <string name="str_contract_end">계약 종료일</string>
+    <string name="str_1rnk_main_area">1순위 접수일 해당지역</string>
+    <string name="str_1rnk_gg_area">1순위 접수일 경기지역</string>
+    <string name="str_1rnk_etc_area">1순위 접수일 기타지역</string>
+    <string name="str_2rnk_main_area">2순위 접수일 해당지역</string>
+    <string name="str_2rnk_gg_area">2순위 접수일 경기지역</string>
+    <string name="str_2rnk_etc_area">2순위 접수일 기타지역</string>
+    <string name="str_special_start">특별 공급 접수 시작일</string>
+    <string name="str_special_end">특별 공급 접수 종료일</string>
+    <string name="str_homepage">홈페이지</string>
+    <string name="str_address">주소</string>
 </resources>

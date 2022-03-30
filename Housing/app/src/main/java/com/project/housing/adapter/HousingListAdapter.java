@@ -63,6 +63,20 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                     Log.d(TAG, "response code : " + response.code());
                     if (response.isSuccessful()) {
+                        Item data = response.body().getBody().getItems().getItem().get(0);
+                        item.setStartContract(data.getStartContract());
+                        item.setEndContract(data.getEndContract());
+                        item.setRnk1CrspArea(data.getRnk1CrspArea());
+                        item.setRnk1EtcGg(data.getRnk1EtcGg());
+                        item.setRnk1EtcArea(data.getRnk1EtcArea());
+                        item.setRnk2CrspArea(data.getRnk2CrspArea());
+                        item.setRnk2EtcGg(data.getRnk2EtcGg());
+                        item.setRnk2EtcArea(data.getRnk2EtcArea());
+                        item.setHomepageAddress(data.getHomepageAddress());
+                        item.setHouseAddress(data.getHouseAddress());
+                        item.setSpecialReceiptStartDate(data.getSpecialReceiptStartDate());
+                        item.setSpecialReceiptEndDate(data.getSpecialReceiptEndDate());
+                        item.setTotalSupply(data.getTotalSupply());
                         Intent intent = new Intent(context, HousingDetailActivity.class);
                         intent.putExtra("detailObj", item);
                         context.startActivity(intent);
@@ -75,7 +89,6 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
                 }
             });
         });
-
     }
 
     @Override
