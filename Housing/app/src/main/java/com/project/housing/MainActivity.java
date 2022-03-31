@@ -115,20 +115,19 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
             if (selectedSidoName.equals(allSidoName)){
                 selectedSidoName = null;
             }
-            Log.d(TAG, "검색 버튼 후 start month : " + startMonth);
-            Log.d(TAG, "검색 버튼 후 end month : " + endMonth);
             service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, selectedSidoName, 1).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                     if (response.isSuccessful()) {
-                        Log.d(TAG, "통신이 되었을 때 start month : " + startMonth);
-                        Log.d(TAG, "통신이 되었을 때 end month : " + endMonth);
-                        if (response.body().getBody() != null && response.body().getBody().getTotalCount() != 0) {
+                        if (response.body().getBody() != null && response.body().getBody().getTotalCount() > 0) {
                             Intent intent = new Intent(getApplicationContext(), HousingListActivity.class);
                             Items items = response.body().getBody().getItems();
+                            int totalCount = response.body().getBody().getTotalCount();
+                            int lastPageNum = calcLastPageNumByTotalCount(totalCount);
                             intent.putExtra("serialHousingListObj", items);
-                            intent.putExtra("serialReqObj", new ReqHousingList(startMonth, endMonth, selectedSidoName));
-                            intent.putExtra("totalCount", response.body().getBody().getTotalCount());
+                            intent.putExtra("serialObj", new ReqHousingList(formatStartMonth, formatEndMonth));
+                            intent.putExtra("serialParamObj", new ReqHousingList(startMonth, endMonth, selectedSidoName));
+                            intent.putExtra("lastPageNum", lastPageNum);
                             startActivity(intent);
                         } else{
                             showAlertDialog();
@@ -144,20 +143,27 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
                     showAlertDialog();
                 }
             });
-
         });
+    }
+
+    private int calcLastPageNumByTotalCount(int totalCnt){
+        int result = totalCnt / 10;
+        if (totalCnt > result * 10){
+            result++;
+        }
+        return result;
     }
 
     // 검색을 하고 데이터가 null 일 때 alertDialog 를 띄운다.
     private void showAlertDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("데이터 조회 실패")
-                .setMessage("검색에 맞는 조건을 찾지 못했습니다." + "\n" + "다시 검색을 해주세요.")
+                .setMessage("검색에 맞는 조건을 찾지 못했습니다.\n다시 검색을 해주세요.")
                 .setPositiveButton("확인", (dialogInterface, i) -> {
                     builder.setView(binding.getRoot());
                 });
         builder.show();
-        binding.sidoBtn.setText("");
+        binding.sidoBtn.setText(selectedSidoName);
     }
 
     // bottom sheet fragment 연결

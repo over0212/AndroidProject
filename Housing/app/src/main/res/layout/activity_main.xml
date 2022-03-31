@@ -17,7 +17,7 @@
             android:id="@+id/logo"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="60dp"
             android:src="@drawable/home_logo"
             app:layout_constraintBottom_toTopOf="@id/middleContainer"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,9 +40,11 @@
                 android:id="@+id/dateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="원하는 기간의 공고 날짜를 선택해주세요"
+                android:layout_marginBottom="10dp"
+                android:text="- 원하는 기간의 공고 날짜를 선택해주세요 -"
                 android:textColor="#41444B"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/dateContainer"
                 app:layout_constraintEnd_toEndOf="@id/dateContainer"
                 app:layout_constraintStart_toStartOf="@id/dateContainer"
@@ -61,26 +63,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dateTv">
 
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:gravity="center"
-                    android:text="날짜"
-                    android:textColor="#41444B"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
                 <Button
                     android:id="@+id/startDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:layout_weight="1.25"
                     android:backgroundTint="@color/white"
                     android:textColor="#41444B"
                     android:textSize="16sp"
                     tools:text="2022-03-05" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:text="~"
+                    android:textColor="#41444B"
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/endDate"
@@ -98,9 +99,9 @@
                 android:id="@+id/warningTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:text="※ 검색은 오늘 기준으로 ± 1년까지 검색됩니다."
-                android:textColor="#E3051E"
+                android:layout_marginBottom="40dp"
+                android:text="※ 1년 이내의 정보만 검색가능 합니다."
+                android:textColor="@color/mainColor"
                 app:layout_constraintBottom_toTopOf="@id/sidoSearchTv"
                 app:layout_constraintEnd_toEndOf="@id/dateContainer"
                 app:layout_constraintStart_toStartOf="@id/dateContainer"
@@ -110,58 +111,41 @@
                 android:id="@+id/sidoSearchTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="원하는 지역을 검색하세요"
+                android:layout_marginBottom="10dp"
+                android:text="- 원하는 지역을 검색하세요 -"
                 android:textColor="#41444B"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@id/sidoContainer"
-                app:layout_constraintEnd_toEndOf="@id/sidoContainer"
-                app:layout_constraintStart_toStartOf="@id/sidoContainer"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/sidoBtn"
+                app:layout_constraintEnd_toEndOf="@id/sidoBtn"
+                app:layout_constraintStart_toStartOf="@id/sidoBtn"
                 app:layout_constraintTop_toBottomOf="@id/warningTv" />
 
 
-            <LinearLayout
-                android:id="@+id/sidoContainer"
-                android:layout_width="0dp"
+            <Button
+                android:id="@+id/sidoBtn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:backgroundTint="@color/white"
+                android:textColor="#41444B"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sidoSearchTv">
+                app:layout_constraintTop_toBottomOf="@id/dateContainer"
+                tools:text="부산광역시" />
 
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:gravity="center"
-                    android:text="지역"
-                    android:textColor="#41444B"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/sidoBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
-                    android:textColor="#41444B"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:text="부산광역시" />
-
-            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/searchBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:text="검           색"
-            android:textColor="#41444B"
-            android:textSize="20sp"
+            android:backgroundTint="@color/mainColor"
+            android:text="검색"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

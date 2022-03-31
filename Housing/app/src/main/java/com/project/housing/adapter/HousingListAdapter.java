@@ -139,7 +139,7 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
 
     @SuppressLint("NotifyDataSetChanged")
     public void addItem(List<Item> addList){
-        itemArrayList.addAll(itemArrayList.size(), addList);
-        notifyDataSetChanged();
+        this.itemArrayList.addAll(itemArrayList.size(), addList);
+        this.notifyDataSetChanged();
     }
 }

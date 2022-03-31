@@ -20,6 +20,11 @@ public class ReqHousingList implements Serializable {
         this.sidoName = sidoName;
     }
 
+    public ReqHousingList(String startMonth, String endMonth){
+        this.startMonth = startMonth;
+        this.endMonth = endMonth;
+    }
+
     public String getStartMonth() {
         return startMonth;
     }

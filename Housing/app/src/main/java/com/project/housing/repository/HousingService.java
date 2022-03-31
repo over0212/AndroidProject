@@ -40,7 +40,7 @@ public interface HousingService {
                                   @Query("startmonth") String startMonth,
                                   @Query("endmonth") String endMonth,
                                   @Query("sido") String sido,
-                                  @Query("pageNo") int page);
+                                  @Query("pageNo") int pageNo);
 
     @GET("getAPTLttotPblancDetail")
             Call<Response> getAPTListDetail(@Query("ServiceKey") String serviceKey,
