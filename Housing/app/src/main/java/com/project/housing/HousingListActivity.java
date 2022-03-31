@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.housing.adapter.HousingListAdapter;
 import com.project.housing.databinding.ActivityHousingListBinding;
@@ -143,7 +144,8 @@ public class HousingListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
-
+                Log.d(TAG, t.getMessage());
+                Toast.makeText(HousingListActivity.this, "데이터 통신 오류입니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }

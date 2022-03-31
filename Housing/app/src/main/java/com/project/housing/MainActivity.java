@@ -99,10 +99,12 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         // 공고 시작 날짜
         binding.startDate.setOnClickListener(view -> {
             callDatePickerDialog(binding.startDate, "start");
+            Log.d(TAG, "공모 시작 날짜 버튼 : " + binding.startDate.getText());
         });
         // 공고 마감 날짜
         binding.endDate.setOnClickListener(view -> {
             callDatePickerDialog(binding.endDate, "end");
+            Log.d(TAG, "공모 종료 날짜 버튼 : " + binding.endDate.getText());
         });
         // 공모 지역
         binding.sidoBtn.setOnClickListener(view -> {
@@ -113,10 +115,14 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
             if (selectedSidoName.equals(allSidoName)){
                 selectedSidoName = null;
             }
+            Log.d(TAG, "검색 버튼 후 start month : " + startMonth);
+            Log.d(TAG, "검색 버튼 후 end month : " + endMonth);
             service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, selectedSidoName, 1).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                     if (response.isSuccessful()) {
+                        Log.d(TAG, "통신이 되었을 때 start month : " + startMonth);
+                        Log.d(TAG, "통신이 되었을 때 end month : " + endMonth);
                         if (response.body().getBody() != null && response.body().getBody().getTotalCount() != 0) {
                             Intent intent = new Intent(getApplicationContext(), HousingListActivity.class);
                             Items items = response.body().getBody().getItems();
@@ -134,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
 
                 @Override
                 public void onFailure(Call<Response> call, Throwable t) {
-                    Log.d("TAG", t.getMessage());
+                    Log.d(TAG, "mainActivity retrofit error : " + t.getMessage());
                     showAlertDialog();
                 }
             });
@@ -178,12 +184,16 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
                 String formattedDate = String.format("%d-%02d", i, i1 + 1, i2);
                 button.setText(formattedDate);
                 if (Type.equals("start")) {
+                    Log.d(TAG, "123123123" + formattedDate);
                     formatStartMonth = String.format("%d%02d", i, i1 + 1);
                     startMonth = formattedDate;
                 } else {
+                    Log.d(TAG, "123123123" + formattedDate);
                     formatEndMonth = String.format("%d%02d", i, i1 + 1);
                     endMonth = formattedDate;
                 }
+                Log.d(TAG, "start Month : " + startMonth);
+                Log.d(TAG, "end Month : " + endMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         ).show();
