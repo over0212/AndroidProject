@@ -45,14 +45,15 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     // 날짜를 원하는 pattern 으로 변경하기 위해 설정
     @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+    private final SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyyMM");
     // 메서드에서 오늘 or 내일 날짜를 설정하기 위한 flag 값
     private final int dateFlag = 0;
     // main 에 바로 띄어주기 위해 선언
     private String startMonth;
     private String endMonth;
     private String allSidoName;
-    private String formatStartMonth;
-    private String formatEndMonth;
+    private String paramStartMonth;
+    private String paramEndMonth;
     private String selectedSidoName;
 
     @Override
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("TAG", "on start!");
         resetData();
         bindingViewAndData();
     }
@@ -83,8 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         startMonth = getTime(0);
         endMonth = getTime(1);
         allSidoName = "전국";
-        formatStartMonth = startMonth;
-        formatEndMonth = endMonth;
+        paramStartMonth = startMonth;
         selectedSidoName = allSidoName;
     }
 
@@ -99,12 +98,10 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         // 공고 시작 날짜
         binding.startDate.setOnClickListener(view -> {
             callDatePickerDialog(binding.startDate, "start");
-            Log.d(TAG, "공모 시작 날짜 버튼 : " + binding.startDate.getText());
         });
         // 공고 마감 날짜
         binding.endDate.setOnClickListener(view -> {
             callDatePickerDialog(binding.endDate, "end");
-            Log.d(TAG, "공모 종료 날짜 버튼 : " + binding.endDate.getText());
         });
         // 공모 지역
         binding.sidoBtn.setOnClickListener(view -> {
@@ -112,24 +109,31 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         });
         // 검색
         binding.searchBtn.setOnClickListener(view -> {
-            if (selectedSidoName.equals(allSidoName)){
+            if (selectedSidoName != null && selectedSidoName.equals(allSidoName)){
                 selectedSidoName = null;
             }
-            service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, selectedSidoName, 1).enqueue(new Callback<Response>() {
+            service.getHousingList(HousingService.decodingKey_J, paramStartMonth, paramEndMonth, selectedSidoName, 1).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                    Log.d("TAG", "param start month : " + paramStartMonth);
+                    Log.d("TAG", "param end month : " + paramEndMonth);
+                    Log.d("TAG", "selected sido : " + selectedSidoName);
+                    Log.d("TAG", "call : " + call.request().url());
                     if (response.isSuccessful()) {
                         if (response.body().getBody() != null && response.body().getBody().getTotalCount() > 0) {
                             Intent intent = new Intent(getApplicationContext(), HousingListActivity.class);
                             Items items = response.body().getBody().getItems();
                             int totalCount = response.body().getBody().getTotalCount();
                             int lastPageNum = calcLastPageNumByTotalCount(totalCount);
+                            Log.d("TAG", "totalCount : " + totalCount);
+                            Log.d("TAG", "lastPageNum : " + lastPageNum);
                             intent.putExtra("serialHousingListObj", items);
-                            intent.putExtra("serialObj", new ReqHousingList(formatStartMonth, formatEndMonth));
-                            intent.putExtra("serialParamObj", new ReqHousingList(startMonth, endMonth, selectedSidoName));
+                            intent.putExtra("serialObj", new ReqHousingList(startMonth, endMonth));
+                            intent.putExtra("serialParamObj", new ReqHousingList(paramStartMonth, paramEndMonth, selectedSidoName));
                             intent.putExtra("lastPageNum", lastPageNum);
                             startActivity(intent);
                         } else{
+                            Log.d("TAG", "response : " + response.errorBody());
                             showAlertDialog();
                         }
                     }else{
@@ -146,12 +150,16 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         });
     }
 
-    private int calcLastPageNumByTotalCount(int totalCnt){
-        int result = totalCnt / 10;
-        if (totalCnt > result * 10){
-            result++;
+    private int calcLastPageNumByTotalCount(int totalCnt) {
+        if (totalCnt < 10) {
+            return 1;
+        } else {
+            int result = totalCnt / 10;
+            if (totalCnt > result * 10) {
+                result++;
+            }
+            return result;
         }
-        return result;
     }
 
     // 검색을 하고 데이터가 null 일 때 alertDialog 를 띄운다.
@@ -163,7 +171,11 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
                     builder.setView(binding.getRoot());
                 });
         builder.show();
-        binding.sidoBtn.setText(selectedSidoName);
+        if (selectedSidoName != null) {
+            binding.sidoBtn.setText(selectedSidoName);
+        }else{
+            binding.sidoBtn.setText(allSidoName);
+        }
     }
 
     // bottom sheet fragment 연결
@@ -187,19 +199,15 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
             @SuppressLint("DefaultLocale")
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                String formattedDate = String.format("%d-%02d", i, i1 + 1, i2);
-                button.setText(formattedDate);
+                String dateFormatByHyphen = String.format("%d-%02d", i, i1 + 1, i2);
+                button.setText(dateFormatByHyphen);
                 if (Type.equals("start")) {
-                    Log.d(TAG, "123123123" + formattedDate);
-                    formatStartMonth = String.format("%d%02d", i, i1 + 1);
-                    startMonth = formattedDate;
+                    paramStartMonth = String.format("%d%02d", i, i1 + 1);
+                    startMonth = dateFormatByHyphen;
                 } else {
-                    Log.d(TAG, "123123123" + formattedDate);
-                    formatEndMonth = String.format("%d%02d", i, i1 + 1);
-                    endMonth = formattedDate;
+                    paramEndMonth = String.format("%d%02d", i, i1 + 1);
+                    endMonth = dateFormatByHyphen;
                 }
-                Log.d(TAG, "start Month : " + startMonth);
-                Log.d(TAG, "end Month : " + endMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         ).show();
@@ -209,9 +217,11 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     private String getTime(int flag) {
         Calendar calendarForInit = Calendar.getInstance();
         if (flag == 0) {
-            // 이전년도
+            // startDate 초기값 : 작년
             calendarForInit.add(calendar.YEAR, -1);
             calendarForInit.add(calendar.MONTH, +1);
+        }else{
+            paramEndMonth = endDateFormat.format(calendarForInit.getTime());
         }
         return dateFormat.format(calendarForInit.getTime());
     }

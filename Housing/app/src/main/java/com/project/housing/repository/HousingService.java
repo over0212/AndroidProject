@@ -36,7 +36,7 @@ public interface HousingService {
 
     // APT(아파트) 분양정보 조회
     @GET("getLttotPblancList")
-    Call<Response> getHousingList(@Query("ServiceKey") String serviceKey,
+    Call<Response> getHousingList(@Query("serviceKey") String serviceKey,
                                   @Query("startmonth") String startMonth,
                                   @Query("endmonth") String endMonth,
                                   @Query("sido") String sido,

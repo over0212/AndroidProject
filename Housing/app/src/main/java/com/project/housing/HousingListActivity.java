@@ -142,7 +142,10 @@ public class HousingListActivity extends AppCompatActivity {
 
                     if (nextPageNum == lastPageNum + 1){
                         preventDuplicateScrollEvent = false;
-                        Log.d("TAG", "The End");
+                        Log.d("TAG", "-------------------");
+                        Log.d("TAG", "item total count : " + (itemTotalCount + 1));
+                        Log.d("TAG", "last Page number : " + (nextPageNum - 1));
+                        Log.d("TAG", "Page End");
                     }
 
                     if (lastVisibleItemPosition == itemTotalCount){
