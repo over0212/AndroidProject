@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     private String paramStartMonth;
     private String paramEndMonth;
     private String selectedSidoName;
+    private String showStartMonth;
+    private String showEndMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +82,10 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     }
 
     private void resetData(){
-        startMonth = getTime(0);
-        endMonth = getTime(1);
+        startMonth = getTime(0); // 작년 월 들어옴
+        Log.d(TAG, startMonth);
+        endMonth = getTime(1); // 해당 월 늘어옴
+        Log.d(TAG, endMonth);
         allSidoName = "전국";
         paramStartMonth = startMonth;
         selectedSidoName = allSidoName;
@@ -215,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
 
     // month 초기화 메서드
     private String getTime(int flag) {
-        Calendar calendarForInit = Calendar.getInstance();
+//        Calendar calendarForInit = Calendar.getInstance();
         if (flag == 0) {
             // startDate 초기값 : 작년
             calendarForInit.add(calendar.YEAR, -1);
@@ -223,6 +227,6 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         }else{
             paramEndMonth = endDateFormat.format(calendarForInit.getTime());
         }
-        return dateFormat.format(calendarForInit.getTime());
+        return dateFormat.format(calendar.getTime());
     }
 }
