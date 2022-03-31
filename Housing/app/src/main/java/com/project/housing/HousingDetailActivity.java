@@ -24,6 +24,7 @@ public class HousingDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         getDetailData();
+        addBackButtonEventListener();
     }
 
     private void getDetailData() {

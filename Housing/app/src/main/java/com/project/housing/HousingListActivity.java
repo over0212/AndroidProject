@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,8 @@ import com.project.housing.databinding.ActivityHousingListBinding;
 import com.project.housing.models.request.ReqHousingList;
 import com.project.housing.models.response.Item;
 import com.project.housing.models.response.Items;
+import com.project.housing.models.response.Response;
+import com.project.housing.repository.HousingService;
 
 import org.w3c.dom.Text;
 
@@ -22,11 +25,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+
 public class HousingListActivity extends AppCompatActivity {
 
     private HousingListAdapter adapter;
     private ActivityHousingListBinding binding;
-    private ReqHousingList housingList;
+    private HousingService service;
+    private List<Item> itemList;
+    private ReqHousingList housingData;
+    private ReqHousingList paramData;
+    private int lastPageNum;
+    private int nextPageNum = 2;
+    private boolean preventDuplicateScrollEvent = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +46,10 @@ public class HousingListActivity extends AppCompatActivity {
         binding = ActivityHousingListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        service = HousingService.retrofit.create(HousingService.class);
+
         getAPTListData();
+        addScrollEventListener();
         addBackButtonEventListener();
     }
 
@@ -42,8 +57,12 @@ public class HousingListActivity extends AppCompatActivity {
     private void getAPTListData() {
         if (getIntent() != null) {
             Items items = (Items) getIntent().getSerializableExtra("serialHousingListObj");
-            housingList = (ReqHousingList) getIntent().getSerializableExtra("serialReqObj");
-            if (housingList.getSidoName() == null){
+            housingData = (ReqHousingList) getIntent().getSerializableExtra("serialObj");
+            paramData = (ReqHousingList) getIntent().getSerializableExtra("serialParamObj");
+            lastPageNum = getIntent().getIntExtra("lastPageNum", 0);
+            itemList = items.getItem();
+
+            if (paramData.getSidoName() == null){
                 connectRecyclerViewAndAdapter(items, true);
                 setTopAppBar(true);
             }else{
@@ -71,10 +90,56 @@ public class HousingListActivity extends AppCompatActivity {
         if (isEmptySidoName){
             binding.topAppBar.sidoTv.setText("전국");
         }else{
-            binding.topAppBar.sidoTv.setText(housingList.getSidoName());
+            binding.topAppBar.sidoTv.setText(paramData.getSidoName());
         }
-        binding.topAppBar.startDateTv.setText(housingList.getStartMonth());
-        binding.topAppBar.endDateTv.setText(housingList.getEndMonth());
+        binding.topAppBar.startDateTv.setText(housingData.getStartMonth());
+        binding.topAppBar.endDateTv.setText(housingData.getEndMonth());
+    }
+
+    // 페이징 처리
+    private void addScrollEventListener(){
+        binding.recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                if (preventDuplicateScrollEvent){
+                    int lastVisibleItemPosition = ((LinearLayoutManager) binding.recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                    int itemTotalCount = binding.recyclerView.getAdapter().getItemCount() - 1;
+
+                    if (nextPageNum == lastPageNum + 1){
+                        preventDuplicateScrollEvent = false;
+                        Log.d("TAG", "The End");
+                    }
+
+                    if (lastVisibleItemPosition == itemTotalCount){
+                        requestHousingData(nextPageNum);
+                        preventDuplicateScrollEvent = false;
+                    }
+                }
+            }
+        });
+    }
+
+    // 데이터 추가 요청
+    private void requestHousingData(int page){
+        service.getHousingList(HousingService.decodingKey, paramData.getStartMonth(), paramData.getEndMonth(), paramData.getSidoName(), page).enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                if (response.isSuccessful()){
+                    List<Item> requiredData = response.body().getBody().getItems().getItem();
+                    itemList = requiredData;
+                    adapter.addItem(requiredData);
+                    nextPageNum++;
+                    preventDuplicateScrollEvent = true;
+                }else{
+                    Log.d("TAG", response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Log.d("TAG", t.getMessage());
+            }
+        });
     }
 
     // 뒤로가기 버튼 이벤트 리스너
@@ -83,4 +148,6 @@ public class HousingListActivity extends AppCompatActivity {
             finish();
         });
     }
+
+
 }

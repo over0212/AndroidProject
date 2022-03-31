@@ -98,6 +98,12 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
         return itemArrayList.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void addItem(List<Item> itemList){
+        this.itemArrayList.addAll(itemArrayList.size(), itemList);
+        this.notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         View itemView;
