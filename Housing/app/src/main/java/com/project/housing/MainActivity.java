@@ -48,12 +48,14 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     // 메서드에서 오늘 or 내일 날짜를 설정하기 위한 flag 값
     private final int dateFlag = 0;
     // main 에 바로 띄어주기 위해 선언
-    private String startMonth;
-    private String endMonth;
-    private String allSidoName;
-    private String formatStartMonth;
-    private String formatEndMonth;
+    private String startMonth; // 통신을 위한 시작 날짜
+    private String endMonth; // 통신을 위한 종료 날짜
+    private String allSidoName; // 전국 도시
+//    private String formatStartMonth; // List Activity 에 띄워줄 시작 날짜
+//    private String formatEndMonth; // List Activity 에 띄워줄 종료 날짜
     private String selectedSidoName;
+    private String showStartMonth;
+    private String showEndMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +82,13 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     }
 
     private void resetData(){
-        startMonth = getTime(0);
-        endMonth = getTime(1);
+        startMonth = getTime(0); // 작년 월 들어옴
+        Log.d(TAG, startMonth);
+        endMonth = getTime(1); // 해당 월 늘어옴
+        Log.d(TAG, endMonth);
         allSidoName = "전국";
-        formatStartMonth = startMonth;
-        formatEndMonth = endMonth;
+//        formatStartMonth = startMonth;
+//        formatEndMonth = endMonth;
         selectedSidoName = allSidoName;
     }
 
@@ -112,9 +116,21 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         });
         // 검색
         binding.searchBtn.setOnClickListener(view -> {
-            if (selectedSidoName.equals(allSidoName)){
+            if (selectedSidoName == null || selectedSidoName.equals(allSidoName)){
                 selectedSidoName = null;
             }
+            showStartMonth = showStartMonth == null ? startMonth : showStartMonth;
+            showEndMonth = showEndMonth == null ? endMonth : showEndMonth;
+            Log.d(TAG, "검색 버튼 눌렀을 때 : " + startMonth);
+            Log.d(TAG, "검색 버튼 눌렀을 때 : " + endMonth);
+            if(startMonth.contains("-")) {
+                startMonth.replace("-", "");
+            }
+            Log.d(TAG, "포맷 후 : " + startMonth);
+            if(endMonth.contains("-")) {
+                endMonth.replace("-", "");
+            }
+            Log.d(TAG, "포맷 후 : " + endMonth);
             service.getHousingList(HousingService.decodingKey_J, startMonth, endMonth, selectedSidoName, 1).enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -125,8 +141,8 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
                             int totalCount = response.body().getBody().getTotalCount();
                             int lastPageNum = calcLastPageNumByTotalCount(totalCount);
                             intent.putExtra("serialHousingListObj", items);
-                            intent.putExtra("serialObj", new ReqHousingList(formatStartMonth, formatEndMonth));
-                            intent.putExtra("serialParamObj", new ReqHousingList(startMonth, endMonth, selectedSidoName));
+                            intent.putExtra("serialObj", new ReqHousingList(startMonth, endMonth));
+                            intent.putExtra("serialParamObj", new ReqHousingList(showStartMonth, showEndMonth, selectedSidoName));
                             intent.putExtra("lastPageNum", lastPageNum);
                             startActivity(intent);
                         } else{
@@ -186,20 +202,19 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @SuppressLint("DefaultLocale")
             @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) { // i : 년 / i1 : 월 / i2 : 일
                 String formattedDate = String.format("%d-%02d", i, i1 + 1, i2);
                 button.setText(formattedDate);
+
                 if (Type.equals("start")) {
                     Log.d(TAG, "123123123" + formattedDate);
-                    formatStartMonth = String.format("%d%02d", i, i1 + 1);
-                    startMonth = formattedDate;
+                    startMonth = String.format("%d%02d", i, i1 + 1);
+                    showStartMonth = formattedDate;
                 } else {
                     Log.d(TAG, "123123123" + formattedDate);
-                    formatEndMonth = String.format("%d%02d", i, i1 + 1);
-                    endMonth = formattedDate;
+                    endMonth = String.format("%d%02d", i, i1 + 1);
+                    showEndMonth = formattedDate;
                 }
-                Log.d(TAG, "start Month : " + startMonth);
-                Log.d(TAG, "end Month : " + endMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
         ).show();
@@ -207,12 +222,12 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
 
     // month 초기화 메서드
     private String getTime(int flag) {
-        Calendar calendarForInit = Calendar.getInstance();
+//        Calendar calendarForInit = Calendar.getInstance();
         if (flag == 0) {
             // 이전년도
-            calendarForInit.add(calendar.YEAR, -1);
-            calendarForInit.add(calendar.MONTH, +1);
+            calendar.add(Calendar.YEAR, -1);
+            calendar.add(Calendar.MONTH, +1);
         }
-        return dateFormat.format(calendarForInit.getTime());
+        return dateFormat.format(calendar.getTime());
     }
 }
