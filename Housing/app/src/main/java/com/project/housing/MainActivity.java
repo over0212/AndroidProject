@@ -45,9 +45,8 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     // 날짜를 원하는 pattern 으로 변경하기 위해 설정
     @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
-    private final SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyyMM");
-    // 메서드에서 오늘 or 내일 날짜를 설정하기 위한 flag 값
-    private final int dateFlag = 0;
+    @SuppressLint("SimpleDateFormat")
+    private final SimpleDateFormat dateFormatForInitial = new SimpleDateFormat("yyyyMM");
     // main 에 바로 띄어주기 위해 선언
     private String startMonth;
     private String endMonth;
@@ -55,8 +54,6 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     private String paramStartMonth;
     private String paramEndMonth;
     private String selectedSidoName;
-    private String showStartMonth;
-    private String showEndMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +79,9 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     }
 
     private void resetData(){
-        startMonth = getTime(0); // 작년 월 들어옴
-        Log.d(TAG, startMonth);
-        endMonth = getTime(1); // 해당 월 늘어옴
-        Log.d(TAG, endMonth);
+        startMonth = getTime(0); // 오늘 기준 작년 월로 설정
+        endMonth = getTime(1); // 오늘 기준 금년 월로 설정
         allSidoName = "전국";
-        paramStartMonth = startMonth;
         selectedSidoName = allSidoName;
     }
 
@@ -116,42 +110,48 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
             if (selectedSidoName != null && selectedSidoName.equals(allSidoName)){
                 selectedSidoName = null;
             }
-            service.getHousingList(HousingService.decodingKey_J, paramStartMonth, paramEndMonth, selectedSidoName, 1).enqueue(new Callback<Response>() {
-                @Override
-                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                    Log.d("TAG", "param start month : " + paramStartMonth);
-                    Log.d("TAG", "param end month : " + paramEndMonth);
-                    Log.d("TAG", "selected sido : " + selectedSidoName);
-                    Log.d("TAG", "call : " + call.request().url());
-                    if (response.isSuccessful()) {
-                        if (response.body().getBody() != null && response.body().getBody().getTotalCount() > 0) {
-                            Intent intent = new Intent(getApplicationContext(), HousingListActivity.class);
-                            Items items = response.body().getBody().getItems();
-                            int totalCount = response.body().getBody().getTotalCount();
-                            int lastPageNum = calcLastPageNumByTotalCount(totalCount);
-                            Log.d("TAG", "totalCount : " + totalCount);
-                            Log.d("TAG", "lastPageNum : " + lastPageNum);
-                            intent.putExtra("serialHousingListObj", items);
-                            intent.putExtra("serialObj", new ReqHousingList(startMonth, endMonth));
-                            intent.putExtra("serialParamObj", new ReqHousingList(paramStartMonth, paramEndMonth, selectedSidoName));
-                            intent.putExtra("lastPageNum", lastPageNum);
-                            startActivity(intent);
-                        } else{
-                            Log.d("TAG", "response : " + response.errorBody());
-                            showAlertDialog();
-                        }
-                    }else{
-                        showAlertDialog();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Response> call, Throwable t) {
-                    Log.d(TAG, "mainActivity retrofit error : " + t.getMessage());
-                    showAlertDialog();
-                }
-            });
+            requestHousingData(new ReqHousingList(paramStartMonth, paramEndMonth, selectedSidoName));
         });
+    }
+
+    private void requestHousingData(ReqHousingList paramList){
+       service.getHousingList(HousingService.decodingKey, paramList.getStartMonth(), paramList.getEndMonth(), paramList.getSidoName(), 1).enqueue(new Callback<Response>() {
+           @Override
+           public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+               Log.d(TAG, "param start month : " + paramStartMonth);
+               Log.d(TAG, "param end month : " + paramEndMonth);
+               Log.d(TAG, "selected sido : " + selectedSidoName);
+               Log.d(TAG, "call : " + call.request().url());
+               Log.d(TAG, "-------------------------------");
+               if (response.isSuccessful()) {
+                   if (response.body().getBody() != null && response.body().getBody().getTotalCount() > 0) {
+                       Intent intent = new Intent(getApplicationContext(), HousingListActivity.class);
+                       Items items = response.body().getBody().getItems();
+                       int totalCount = response.body().getBody().getTotalCount();
+                       int lastPageNum = calcLastPageNumByTotalCount(totalCount);
+                       Log.d(TAG, "totalCount : " + totalCount);
+                       Log.d(TAG, "lastPageNum : " + lastPageNum);
+                       intent.putExtra("serialHousingListObj", items);
+                       intent.putExtra("serialObj", new ReqHousingList(startMonth, endMonth));
+                       intent.putExtra("serialParamObj", paramList);
+                       intent.putExtra("lastPageNum", lastPageNum);
+                       startActivity(intent);
+                   } else{
+                       assert response.body().getBody() != null;
+                       Log.d(TAG, "response success but data count : " + response.body().getBody().getTotalCount());
+                       showAlertDialog();
+                   }
+               }else{
+                   showAlertDialog();
+               }
+           }
+
+           @Override
+           public void onFailure(Call<Response> call, Throwable t) {
+               Log.d(TAG, "mainActivity retrofit error : " + t.getMessage());
+               showAlertDialog();
+           }
+       });
     }
 
     private int calcLastPageNumByTotalCount(int totalCnt) {
@@ -219,14 +219,15 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
 
     // month 초기화 메서드
     private String getTime(int flag) {
-//        Calendar calendarForInit = Calendar.getInstance();
+        Calendar calendarForInit = Calendar.getInstance();
         if (flag == 0) {
             // startDate 초기값 : 작년
             calendarForInit.add(calendar.YEAR, -1);
             calendarForInit.add(calendar.MONTH, +1);
+            paramStartMonth = dateFormatForInitial.format(calendarForInit.getTime());
         }else{
-            paramEndMonth = endDateFormat.format(calendarForInit.getTime());
+            paramEndMonth = dateFormatForInitial.format(calendarForInit.getTime());
         }
-        return dateFormat.format(calendar.getTime());
+        return dateFormat.format(calendarForInit.getTime());
     }
 }

@@ -25,6 +25,7 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.LongToDoubleFunction;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,7 +74,6 @@ public class HousingListActivity extends AppCompatActivity {
     private void getAPTListData() {
         if (getIntent() != null) {
             Items items = (Items) getIntent().getSerializableExtra("serialHousingListObj");
-//            totalCount = getIntent().getIntExtra("totalCount", 0);
             housingData = (ReqHousingList) getIntent().getSerializableExtra("serialObj");
             paramData = (ReqHousingList) getIntent().getSerializableExtra("serialParamObj");
             lastPageNum = getIntent().getIntExtra("lastPageNum", 0);
@@ -133,28 +133,30 @@ public class HousingListActivity extends AppCompatActivity {
 
     // 페이징 처리
     private void addScrollEventListener(){
-        binding.recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                if (preventDuplicateScrollEvent){
-                    int lastVisibleItemPosition = ((LinearLayoutManager) binding.recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                    int itemTotalCount = binding.recyclerView.getAdapter().getItemCount() - 1;
+        if (lastPageNum > 1) {
+            binding.recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                    if (preventDuplicateScrollEvent) {
+                        int lastVisibleItemPosition = ((LinearLayoutManager) binding.recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                        int itemTotalCount = binding.recyclerView.getAdapter().getItemCount() - 1;
 
-                    if (nextPageNum == lastPageNum + 1){
-                        preventDuplicateScrollEvent = false;
-                        Log.d("TAG", "-------------------");
-                        Log.d("TAG", "item total count : " + (itemTotalCount + 1));
-                        Log.d("TAG", "last Page number : " + (nextPageNum - 1));
-                        Log.d("TAG", "Page End");
-                    }
+                        if (nextPageNum == lastPageNum + 1) {
+                            preventDuplicateScrollEvent = false;
+                            Log.d("TAG", "-------------------");
+                            Log.d("TAG", "item total count : " + (itemTotalCount + 1));
+                            Log.d("TAG", "last Page number : " + (nextPageNum - 1));
+                            Log.d("TAG", "Page End");
+                        }
 
-                    if (lastVisibleItemPosition == itemTotalCount){
-                        requestHousingData(nextPageNum);
-                        preventDuplicateScrollEvent = false;
+                        if (lastVisibleItemPosition == itemTotalCount) {
+                            requestHousingData(nextPageNum);
+                            preventDuplicateScrollEvent = false;
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     // 데이터 추가 요청
@@ -163,6 +165,7 @@ public class HousingListActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if (response.isSuccessful()){
+                    Log.d(TAG,"next page number : " + nextPageNum);
                     List<Item> requiredData = response.body().getBody().getItems().getItem();
                     itemList = requiredData;
                     adapter.addItem(requiredData);
