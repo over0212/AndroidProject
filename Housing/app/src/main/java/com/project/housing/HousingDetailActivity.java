@@ -2,6 +2,7 @@ package com.project.housing;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,8 +24,13 @@ public class HousingDetailActivity extends AppCompatActivity {
         binding = ActivityHousingDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setStatusBar();
         getDetailData();
         addBackButtonEventListener();
+    }
+
+    private void setStatusBar(){
+        getWindow().setStatusBarColor(Color.WHITE);
     }
 
     private void getDetailData() {

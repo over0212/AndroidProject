@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -58,8 +59,7 @@ public class HousingListActivity extends AppCompatActivity {
         binding = ActivityHousingListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        service = HousingService.retrofit.create(HousingService.class);
-
+        setStatusBar();
         getAPTListData();
         initData();
         addScrollEventListener();
@@ -69,6 +69,11 @@ public class HousingListActivity extends AppCompatActivity {
     private void initData() {
         service = HousingService.retrofit.create(HousingService.class);
     }
+
+    private void setStatusBar(){
+        getWindow().setStatusBarColor(Color.WHITE);
+    }
+
 
     // APT List data 뿌려주기
     private void getAPTListData() {

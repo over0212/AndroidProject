@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -64,18 +65,16 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         addEventListener();
     }
 
+    private void initData() {
+        // retrofit 초기화
+        service = HousingService.retrofit.create(HousingService.class);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         resetData();
         bindingViewAndData();
-    }
-
-    private void initData() {
-        resetData();
-        bindingViewAndData();
-        // retrofit 초기화
-        service = HousingService.retrofit.create(HousingService.class);
     }
 
     private void resetData(){
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         binding.endDate.setText(endMonth);
         binding.sidoBtn.setText(allSidoName);
     }
-
     @SuppressLint("DefaultLocale")
     private void addEventListener() {
         // 공고 시작 날짜

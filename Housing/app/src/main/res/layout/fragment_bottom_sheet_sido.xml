@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:behavior_draggable="true"
+    android:background="@color/white"
     app:behavior_hideable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -13,7 +14,7 @@
         android:id="@+id/sidoListRecyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:clipToPadding="false"
         android:paddingTop="@dimen/list_item_spacing_half"
