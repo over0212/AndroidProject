@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
 
     private void resetData(){
         startMonth = getTime(dateFlag); // 오늘 기준 작년 월로 설정
-        endMonth = getTime(1); // 오늘 기준 금년 월로 설정
+        endMonth = getTime(dateFlag+1); // 오늘 기준 금년 월로 설정
         allSidoName = "전국";
         selectedSidoName = allSidoName;
     }
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     // month 초기화 메서드
     private String getTime(int flag) {
         Calendar calendarForInit = Calendar.getInstance();
-        if (flag == 0) {
+        if (flag == dateFlag) {
             // startDate 초기값 : 작년
             calendarForInit.add(calendar.YEAR, -1);
             calendarForInit.add(calendar.MONTH, +1);
