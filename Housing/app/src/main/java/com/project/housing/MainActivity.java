@@ -41,13 +41,15 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     private SidoBottomSheetFragment sidoBottomSheetFragment;
     private HousingService service;
 
-    // 날짜를 구하기 위해 Calendar 선언
+    // 날짜를 구하기 위해 Calendar 선언 (date picker 를 위한 Calendar)
     private final Calendar calendar = Calendar.getInstance();
     // 날짜를 원하는 pattern 으로 변경하기 위해 설정
     @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat dateFormatForInitial = new SimpleDateFormat("yyyyMM");
+    // 메서드에서 오늘 or 내일 날짜를 설정하기 위한 flag 값
+    private final int dateFlag = 0;
     // main 에 바로 띄어주기 위해 선언
     private String startMonth;
     private String endMonth;
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     }
 
     private void resetData(){
-        startMonth = getTime(0); // 오늘 기준 작년 월로 설정
+        startMonth = getTime(dateFlag); // 오늘 기준 작년 월로 설정
         endMonth = getTime(1); // 오늘 기준 금년 월로 설정
         allSidoName = "전국";
         selectedSidoName = allSidoName;
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
 
     private void bindingViewAndData(){
         binding.startDate.setText(startMonth);
+        Log.d(TAG, startMonth);
         binding.endDate.setText(endMonth);
         binding.sidoBtn.setText(allSidoName);
     }
@@ -105,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         });
         // 검색
         binding.searchBtn.setOnClickListener(view -> {
-            if (selectedSidoName != null && selectedSidoName.equals(allSidoName)){
+            if (selectedSidoName != null && selectedSidoName.equals(allSidoName)) {
                 selectedSidoName = null;
             }
             requestHousingData(new ReqHousingList(paramStartMonth, paramEndMonth, selectedSidoName));
@@ -190,8 +193,8 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     // bottom sheet 에서 아래로 슬라이딩 했을 때 사라지는 기능도 구현
     @Override
     public void onItemClick(String sidoName) {
-        binding.sidoBtn.setText(sidoName);
         this.selectedSidoName = sidoName;
+        binding.sidoBtn.setText(sidoName);
         sidoBottomSheetFragment.dismiss();
     }
 

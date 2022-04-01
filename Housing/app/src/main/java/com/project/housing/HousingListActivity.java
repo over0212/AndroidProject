@@ -49,6 +49,7 @@ public class HousingListActivity extends AppCompatActivity {
     private ReqHousingList paramData;
 
     // 스크롤 페이징 처리를 위한 변수
+    private int totalCount = 0;
     private int lastPageNum;
     private int nextPageNum = 2;
     private boolean preventDuplicateScrollEvent = true;
@@ -60,8 +61,8 @@ public class HousingListActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setStatusBar();
-        getAPTListData();
         initData();
+        getAPTListData();
         addScrollEventListener();
         addBackButtonEventListener();
     }
@@ -79,12 +80,13 @@ public class HousingListActivity extends AppCompatActivity {
     private void getAPTListData() {
         if (getIntent() != null) {
             Items items = (Items) getIntent().getSerializableExtra("serialHousingListObj");
+            totalCount = getIntent().getIntExtra("totalCount", 0);
             housingData = (ReqHousingList) getIntent().getSerializableExtra("serialObj");
             paramData = (ReqHousingList) getIntent().getSerializableExtra("serialParamObj");
             lastPageNum = getIntent().getIntExtra("lastPageNum", 0);
             itemList = items.getItem();
 
-            if (paramData.getSidoName() == null){
+            if (paramData.getSidoName() == null) {
                 connectRecyclerViewAndAdapter(items, true);
                 setTopAppBar(true);
             } else {
@@ -129,7 +131,7 @@ public class HousingListActivity extends AppCompatActivity {
     private void setTopAppBar(Boolean isEmptySidoName) {
         if (isEmptySidoName) {
             binding.topAppBar.sidoTv.setText("전국");
-        }else{
+        } else {
             binding.topAppBar.sidoTv.setText(paramData.getSidoName());
         }
         binding.topAppBar.startDateTv.setText(housingData.getStartMonth());
@@ -137,7 +139,7 @@ public class HousingListActivity extends AppCompatActivity {
     }
 
     // 페이징 처리
-    private void addScrollEventListener(){
+    private void addScrollEventListener() {
         if (lastPageNum > 1) {
             binding.recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
@@ -165,18 +167,17 @@ public class HousingListActivity extends AppCompatActivity {
     }
 
     // 데이터 추가 요청
-    private void requestHousingData(int page){
+    private void requestHousingData(int page) {
         service.getHousingList(HousingService.decodingKey, paramData.getStartMonth(), paramData.getEndMonth(), paramData.getSidoName(), page).enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if (response.isSuccessful()){
-                    Log.d(TAG,"next page number : " + nextPageNum);
                     List<Item> requiredData = response.body().getBody().getItems().getItem();
                     itemList = requiredData;
                     adapter.addItem(requiredData);
                     nextPageNum++;
                     preventDuplicateScrollEvent = true;
-                }else{
+                } else {
                     Log.d("TAG", response.errorBody().toString());
                 }
             }
@@ -194,29 +195,4 @@ public class HousingListActivity extends AppCompatActivity {
             finish();
         });
     }
-
-//    private void requestItemListData(int pageNumber) {
-//        service.getHousingList(HousingService.decodingKey_J, housingList.getStartMonth(),
-//                housingList.getEndMonth(), housingList.getSidoName(), pageNumber).enqueue(new Callback<Response>() {
-//            @Override
-//            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-//                itemList = response.body().getBody().getItems().getItem();
-//                if (itemList != null) {
-//                    Log.d(TAG, "item : " + itemList);
-//                    adapter.addItem(itemList);
-//
-//                    currentPageNumber++;
-//                    duplicateScrollEvent = true;
-//                } else {
-//                    duplicateScrollEvent = false;
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Response> call, Throwable t) {
-//                Log.d(TAG, t.getMessage());
-//                Toast.makeText(HousingListActivity.this, "데이터 통신 오류입니다.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 }
