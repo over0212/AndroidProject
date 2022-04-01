@@ -30,12 +30,12 @@
             android:padding="15dp">
 
             <LinearLayout
-                android:id="@+id/box1_noticeNum"
+                android:id="@+id/box1_houseNM"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@id/box2_houseNM"
+                app:layout_constraintBottom_toTopOf="@id/box2_noticeNum"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -44,21 +44,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="@string/str_notice_number"
+                    android:text="@string/str_house_name"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/noticeNumber"
+                    android:id="@+id/houseName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    tools:text="2021000200" />
+                    tools:text="에일린의 뜰" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/box2_houseNM"
+                android:id="@+id/box2_noticeNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -66,10 +66,10 @@
                 app:layout_constraintBottom_toTopOf="@id/box3_section_or_rent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/box1_noticeNum">
+                app:layout_constraintTop_toBottomOf="@id/box1_houseNM">
 
                 <LinearLayout
-                    android:id="@+id/box2_houseNM_1"
+                    android:id="@+id/box2_noticeNum_1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
@@ -80,21 +80,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="@string/str_house_name"
+                        android:text="@string/str_notice_number"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/houseName"
+                        android:id="@+id/noticeNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        tools:text="에일린의 뜰" />
+                        tools:text="2021000200" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/box2_houseNM_2"
+                    android:id="@+id/box2_noticeNum_2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
@@ -115,9 +115,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        tools:text="에일린의 뜰" />
+                        tools:text="2022020202" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -129,7 +128,7 @@
                 app:layout_constraintBottom_toTopOf="@id/box4_build_and_supply"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/box2_houseNM">
+                app:layout_constraintTop_toBottomOf="@id/box2_noticeNum">
 
                 <LinearLayout
                     android:id="@+id/box3_section_or_rent_1"
@@ -178,7 +177,6 @@
                         android:textSize="16sp"
                         tools:text="2021000200" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -241,9 +239,7 @@
                         android:textSize="16sp"
                         tools:text="1140" />
                 </LinearLayout>
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/box5_receipt"
@@ -279,30 +275,6 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         tools:text="2021000200" />
-
-                    <LinearLayout
-                        android:id="@+id/box7_contract_1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:text="@string/str_contract_start"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/startContract"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            tools:text="2021000200" />
-                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -328,7 +300,6 @@
                         android:textSize="16sp"
                         tools:text="2021000200" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -372,6 +343,30 @@
                 app:layout_constraintTop_toBottomOf="@id/box6_winner">
 
                 <LinearLayout
+                    android:id="@+id/box7_contract_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/str_contract_start"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/startContract"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        tools:text="2021000200" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/box7_contract_2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -394,7 +389,6 @@
                         android:textSize="16sp"
                         tools:text="2021000200" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -478,8 +472,6 @@
                         android:textSize="16sp"
                         tools:text="1순위 접수일 기타지역" />
                 </LinearLayout>
-
-
             </LinearLayout>
 
             <LinearLayout
@@ -563,7 +555,6 @@
                         android:textSize="16sp"
                         tools:text="2순위 접수일 기타지역" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -625,7 +616,6 @@
                         android:textSize="16sp"
                         tools:text="2021000200" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
