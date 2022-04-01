@@ -3,6 +3,7 @@ package com.project.housing.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +20,8 @@ import com.project.housing.R;
 import com.project.housing.models.response.Item;
 import com.project.housing.models.response.Response;
 import com.project.housing.repository.HousingService;
-import com.project.housing.utils.Define;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
+import java.net.URL;
 import java.util.List;
 
 import retrofit2.Call;
@@ -119,10 +117,10 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
 
         @SuppressLint("SetTextI18n")
         private void setItem(Item item) {
-            if (isSearchAll){
+            if (isSearchAll) {
                 listSidoContainer.setVisibility(View.VISIBLE);
                 sidoNameTv.setText(item.getSido());
-            }else{
+            } else {
                 listSidoContainer.setVisibility(View.GONE);
             }
 
@@ -138,7 +136,7 @@ public class HousingListAdapter extends RecyclerView.Adapter<HousingListAdapter.
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void addItem(List<Item> addList){
+    public void addItem(List<Item> addList) {
         this.itemArrayList.addAll(itemArrayList.size(), addList);
         this.notifyDataSetChanged();
     }

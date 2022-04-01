@@ -37,12 +37,6 @@ public class HousingListActivity extends AppCompatActivity {
     private HousingListAdapter adapter;
     private ActivityHousingListBinding binding;
 
-    // Aiden
-//    private int currentPageNumber = 1;
-//    private boolean duplicateScrollEvent = true;
-//    private boolean isGetSecondData = true;
-//    private int totalCount = 0;
-
     private HousingService service;
     private List<Item> itemList;
     private ReqHousingList housingData;
@@ -106,25 +100,6 @@ public class HousingListActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(manager);
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.hasFixedSize();
-//        binding.recyclerView.setOnScrollChangeListener((view, i, i1, i2, i3) -> {
-//            if (duplicateScrollEvent) { // true 일때 실행 반복
-//                int lastVisibleItemPosition = ((LinearLayoutManager) binding.recyclerView.getLayoutManager())
-//                        .findLastVisibleItemPosition(); // 마지막 item 의 index 값을 가져오기 위해 변수로 지정
-//
-//                int itemTotalCount = binding.recyclerView.getAdapter().getItemCount() - 1;
-//
-//                if (lastVisibleItemPosition == itemTotalCount) {
-//                    Log.d(TAG, "마지막 아이템에 도달했습니다.");
-//                    if (currentPageNumber != 1) {
-//                        requestItemListData(currentPageNumber);
-//                        duplicateScrollEvent = false;
-//                        if ((totalCount / 10) + 1 >= currentPageNumber) {
-//                            duplicateScrollEvent = false;
-//                        }
-//                    }
-//                }
-//            }
-//        });
     }
 
     // topAppBar 에 데이터 세팅
