@@ -40,12 +40,13 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     private SidoBottomSheetFragment sidoBottomSheetFragment;
     private HousingService service;
 
-    // 날짜를 구하기 위해 Calendar 선언
+    // 날짜를 구하기 위해 Calendar 선언 (date picker 를 위한 Calendar)
     private final Calendar calendar = Calendar.getInstance();
     // 날짜를 원하는 pattern 으로 변경하기 위해 설정
     @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
-    private final SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyyMM");
+    @SuppressLint("SimpleDateFormat")
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
     // 메서드에서 오늘 or 내일 날짜를 설정하기 위한 flag 값
     private final int dateFlag = 0;
     // main 에 바로 띄어주기 위해 선언
@@ -55,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     private String paramStartMonth;
     private String paramEndMonth;
     private String selectedSidoName;
-    private String showStartMonth;
-    private String showEndMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +86,12 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
         endMonth = getTime(1); // 해당 월 늘어옴
         Log.d(TAG, endMonth);
         allSidoName = "전국";
-        paramStartMonth = startMonth;
         selectedSidoName = allSidoName;
     }
 
     private void bindingViewAndData(){
         binding.startDate.setText(startMonth);
+        Log.d(TAG, startMonth);
         binding.endDate.setText(endMonth);
         binding.sidoBtn.setText(allSidoName);
     }
@@ -132,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
                             Log.d("TAG", "totalCount : " + totalCount);
                             Log.d("TAG", "lastPageNum : " + lastPageNum);
                             intent.putExtra("serialHousingListObj", items);
+                            intent.putExtra("totalCount", totalCount);
                             intent.putExtra("serialObj", new ReqHousingList(startMonth, endMonth));
                             intent.putExtra("serialParamObj", new ReqHousingList(paramStartMonth, paramEndMonth, selectedSidoName));
                             intent.putExtra("lastPageNum", lastPageNum);
@@ -192,8 +192,8 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
     // bottom sheet 에서 아래로 슬라이딩 했을 때 사라지는 기능도 구현
     @Override
     public void onItemClick(String sidoName) {
-        binding.sidoBtn.setText(sidoName);
         this.selectedSidoName = sidoName;
+        binding.sidoBtn.setText(sidoName);
         sidoBottomSheetFragment.dismiss();
     }
 
@@ -219,14 +219,15 @@ public class MainActivity extends AppCompatActivity implements OnSidoItemClickLi
 
     // month 초기화 메서드
     private String getTime(int flag) {
-//        Calendar calendarForInit = Calendar.getInstance();
+        Calendar calendarForInit = Calendar.getInstance();
         if (flag == 0) {
             // startDate 초기값 : 작년
             calendarForInit.add(calendar.YEAR, -1);
             calendarForInit.add(calendar.MONTH, +1);
+            paramStartMonth = simpleDateFormat.format(calendarForInit.getTime());
         }else{
-            paramEndMonth = endDateFormat.format(calendarForInit.getTime());
+            paramEndMonth = simpleDateFormat.format(calendarForInit.getTime());
         }
-        return dateFormat.format(calendar.getTime());
+        return dateFormat.format(calendarForInit.getTime());
     }
 }

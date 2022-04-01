@@ -47,6 +47,7 @@ public class HousingListActivity extends AppCompatActivity {
     private ReqHousingList paramData;
 
     // 스크롤 페이징 처리를 위한 변수
+    private int totalCount = 0;
     private int lastPageNum;
     private int nextPageNum = 2;
     private boolean preventDuplicateScrollEvent = true;
@@ -59,8 +60,8 @@ public class HousingListActivity extends AppCompatActivity {
 
         service = HousingService.retrofit.create(HousingService.class);
 
-        getAPTListData();
         initData();
+        getAPTListData();
         addScrollEventListener();
         addBackButtonEventListener();
     }
@@ -73,13 +74,13 @@ public class HousingListActivity extends AppCompatActivity {
     private void getAPTListData() {
         if (getIntent() != null) {
             Items items = (Items) getIntent().getSerializableExtra("serialHousingListObj");
-//            totalCount = getIntent().getIntExtra("totalCount", 0);
+            totalCount = getIntent().getIntExtra("totalCount", 0);
             housingData = (ReqHousingList) getIntent().getSerializableExtra("serialObj");
             paramData = (ReqHousingList) getIntent().getSerializableExtra("serialParamObj");
             lastPageNum = getIntent().getIntExtra("lastPageNum", 0);
             itemList = items.getItem();
 
-            if (paramData.getSidoName() == null){
+            if (paramData.getSidoName() == null) {
                 connectRecyclerViewAndAdapter(items, true);
                 setTopAppBar(true);
             } else {
@@ -124,7 +125,7 @@ public class HousingListActivity extends AppCompatActivity {
     private void setTopAppBar(Boolean isEmptySidoName) {
         if (isEmptySidoName) {
             binding.topAppBar.sidoTv.setText("전국");
-        }else{
+        } else {
             binding.topAppBar.sidoTv.setText(paramData.getSidoName());
         }
         binding.topAppBar.startDateTv.setText(housingData.getStartMonth());
@@ -132,43 +133,45 @@ public class HousingListActivity extends AppCompatActivity {
     }
 
     // 페이징 처리
-    private void addScrollEventListener(){
-        binding.recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                if (preventDuplicateScrollEvent){
-                    int lastVisibleItemPosition = ((LinearLayoutManager) binding.recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                    int itemTotalCount = binding.recyclerView.getAdapter().getItemCount() - 1;
+    private void addScrollEventListener() {
+        if (totalCount > 10) {
+            binding.recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                    if (preventDuplicateScrollEvent) {
+                        int lastVisibleItemPosition = ((LinearLayoutManager) binding.recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                        int itemTotalCount = binding.recyclerView.getAdapter().getItemCount() - 1;
 
-                    if (nextPageNum == lastPageNum + 1){
-                        preventDuplicateScrollEvent = false;
-                        Log.d("TAG", "-------------------");
-                        Log.d("TAG", "item total count : " + (itemTotalCount + 1));
-                        Log.d("TAG", "last Page number : " + (nextPageNum - 1));
-                        Log.d("TAG", "Page End");
-                    }
+                        if (nextPageNum == lastPageNum + 1) {
+                            preventDuplicateScrollEvent = false;
+                            Log.d("TAG", "-------------------");
+                            Log.d("TAG", "item total count : " + (itemTotalCount + 1));
+                            Log.d("TAG", "last Page number : " + (nextPageNum - 1));
+                            Log.d("TAG", "Page End");
+                        }
 
-                    if (lastVisibleItemPosition == itemTotalCount){
-                        requestHousingData(nextPageNum);
-                        preventDuplicateScrollEvent = false;
+                        if (lastVisibleItemPosition == itemTotalCount) {
+                            requestHousingData(nextPageNum);
+                            preventDuplicateScrollEvent = false;
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     // 데이터 추가 요청
-    private void requestHousingData(int page){
+    private void requestHousingData(int page) {
         service.getHousingList(HousingService.decodingKey, paramData.getStartMonth(), paramData.getEndMonth(), paramData.getSidoName(), page).enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     List<Item> requiredData = response.body().getBody().getItems().getItem();
                     itemList = requiredData;
                     adapter.addItem(requiredData);
                     nextPageNum++;
                     preventDuplicateScrollEvent = true;
-                }else{
+                } else {
                     Log.d("TAG", response.errorBody().toString());
                 }
             }
